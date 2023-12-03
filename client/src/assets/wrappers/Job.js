@@ -26,6 +26,15 @@ const Wrapper = styled.article`
     color: var(--white);
     margin-right: 2rem;
   }
+  .baigta {
+    background: #525252;
+  }
+  .ekspozicija {
+    background: #064704;
+  }
+  .montavimas {
+    background: #d66a6a;
+  }
   .info {
     h5 {
       margin-bottom: 0.5rem;

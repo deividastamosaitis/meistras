@@ -31,7 +31,7 @@ const ZemelapisObjektu = () => {
           latitude: 55.28833,
           zoom: 6,
         }}
-        style={{ width: '100%', height: 400 }}
+        style={{ width: '100%', height: '100svh' }}
         mapStyle="mapbox://styles/mapbox/streets-v10"
       >
         {jobs.map((job) => {

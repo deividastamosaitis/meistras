@@ -11,7 +11,17 @@ const Job = ({ _id, vardas, telefonas, createdAt, jobStatus, adresas }) => {
   return (
     <Wrapper>
       <header>
-        <div className="main-icon">V</div>
+        <div
+          className={`main-icon ${
+            jobStatus === 'Ekspozicija'
+              ? 'ekspozicija'
+              : jobStatus === 'Baigta'
+              ? 'baigta'
+              : 'montavimas'
+          }`}
+        >
+          {jobStatus.charAt(0)}
+        </div>
         <div className="info">
           <h5>{vardas}</h5>
           <p>{telefonas}</p>

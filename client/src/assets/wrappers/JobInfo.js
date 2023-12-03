@@ -15,6 +15,7 @@ const Wrapper = styled.div`
   .job-text {
     text-transform: capitalize;
     letter-spacing: var(--letter-spacing);
+    color: var(--text-secondary-color);
   }
 `;
 export default Wrapper;

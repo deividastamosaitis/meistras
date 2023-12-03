@@ -1,4 +1,8 @@
-import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from 'react-icons/fa';
+import {
+  FaLocationArrow,
+  FaPhoneSquareAlt,
+  FaCalendarAlt,
+} from 'react-icons/fa';
 import { Link, Form } from 'react-router-dom';
 import Wrapper from '../assets/wrappers/Job';
 import JobInfo from './JobInfo';
@@ -24,7 +28,9 @@ const Job = ({ _id, vardas, telefonas, createdAt, jobStatus, adresas }) => {
         </div>
         <div className="info">
           <h5>{vardas}</h5>
-          <p>{telefonas}</p>
+          <a href={`tel: ${telefonas}`} className="telefonas">
+            <JobInfo icon={<FaPhoneSquareAlt />} text={telefonas} />
+          </a>
         </div>
       </header>
       <div className="content">

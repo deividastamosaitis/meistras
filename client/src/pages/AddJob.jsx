@@ -1,21 +1,21 @@
-import { FormRow, FormRowSelect, AddAddress } from '../components';
-import Wrapper from '../assets/wrappers/DashboardFormPage';
-import { useOutletContext } from 'react-router-dom';
-import { JOB_STATUS, JOB_TYPE } from '../../../utils/constants';
-import { Form, useNavigation, redirect } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { useState, useCallback } from 'react';
-import { AddressAutofill } from '@mapbox/search-js-react';
-import customFetch from '../utils/customFetch';
+import { FormRow, FormRowSelect, AddAddress } from "../components";
+import Wrapper from "../assets/wrappers/DashboardFormPage";
+import { useOutletContext } from "react-router-dom";
+import { JOB_STATUS, JOB_TYPE } from "../../../utils/constants";
+import { Form, useNavigation, redirect } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useState, useCallback } from "react";
+import { AddressAutofill } from "@mapbox/search-js-react";
+import customFetch from "../utils/customFetch";
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   console.log(formData);
   try {
-    await customFetch.post('/jobs', data);
-    toast.success('Objektas pridėtas');
-    return redirect('all-jobs');
+    await customFetch.post("/jobs", data);
+    toast.success("Objektas pridėtas");
+    return redirect("all-jobs");
   } catch (error) {
     toast.error(error?.response?.data?.msg);
     return error;
@@ -45,7 +45,7 @@ const AddJob = () => {
   );
   const { user } = useOutletContext();
   const navigation = useNavigation();
-  const isSubmitting = navigation.state === 'pridedama';
+  const isSubmitting = navigation.state === "pridedama";
   return (
     <Wrapper>
       <Form method="post" className="form">
@@ -53,11 +53,12 @@ const AddJob = () => {
         <div className="form-center">
           <FormRow type="text" name="vardas" />
           <FormRow type="number" name="telefonas" />
+          <FormRow type="text" name="email" />
           <AddressAutofill
             accessToken="pk.eyJ1IjoiZnJpZGF5OTkiLCJhIjoiY2xqZWx6aHA1MHBqcjNlcjMydGR5OWdqYiJ9.PDiu8ZfBkoCT08_0z5FEYA"
             onRetrieve={handleAddres}
           >
-            <FormRow type="text" labelText={'adresas'} />
+            <FormRow type="text" labelText={"adresas"} />
           </AddressAutofill>
           <div className="lat-lng">
             <FormRow name="adresas" defaultValue={fullAddress}></FormRow>
@@ -83,7 +84,7 @@ const AddJob = () => {
             className="btn btn-block form-btn"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'pridedama' : 'prideti'}
+            {isSubmitting ? "pridedama" : "prideti"}
           </button>
         </div>
       </Form>

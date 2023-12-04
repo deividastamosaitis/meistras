@@ -1,11 +1,12 @@
-import mongoose from 'mongoose';
-import { JOB_STATUS } from '../utils/constants.js';
+import mongoose from "mongoose";
+import { JOB_STATUS } from "../utils/constants.js";
 
 const JobSchema = new mongoose.Schema(
   {
     vardas: String,
     telefonas: Number,
     adresas: String,
+    email: String,
     lat: String,
     lng: String,
     jobStatus: {
@@ -16,10 +17,10 @@ const JobSchema = new mongoose.Schema(
     info: String,
     createdBy: {
       type: mongoose.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
     },
   },
   { timestamps: true }
 );
 
-export default mongoose.model('Job', JobSchema);
+export default mongoose.model("Job", JobSchema);

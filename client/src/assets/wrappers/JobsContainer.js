@@ -14,6 +14,29 @@ const Wrapper = styled.section`
     grid-template-columns: 1fr;
     row-gap: 2rem;
   }
+  .content-center {
+    display: grid;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    grid-template-columns: 1fr;
+    row-gap: 1.5rem;
+    align-items: center;
+    @media (min-width: 576px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .baigta {
+    background: #525252;
+  }
+  .ekspozicija {
+    background: #064704;
+  }
+  .montavimas {
+    background: #d66a6a;
+  }
+  .filter-btn {
+    margin-right: 0.5rem;
+  }
   @media (min-width: 1120px) {
     .jobs {
       grid-template-columns: 1fr 1fr;

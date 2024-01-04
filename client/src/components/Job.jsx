@@ -3,6 +3,7 @@ import {
   FaPhoneSquareAlt,
   FaCalendarAlt,
   FaInfoCircle,
+  FaRegEdit,
 } from "react-icons/fa";
 import { IoIosMail } from "react-icons/io";
 import { Link, Form } from "react-router-dom";
@@ -21,6 +22,7 @@ const Job = ({
   jobStatus,
   adresas,
   info,
+  createdUser,
 }) => {
   const date = day(createdAt).format("YYYY-MM-D");
   return (
@@ -54,6 +56,10 @@ const Job = ({
           <JobInfo icon={<FaLocationArrow />} text={adresas} />
           <JobInfo icon={<FaCalendarAlt />} text={`Registruota: ${date}`} />
           <JobInfo icon={<FaInfoCircle />} text={info} />
+          <JobInfo
+            icon={<FaRegEdit />}
+            text={createdUser ? createdUser : "Demo"}
+          />
         </div>
         <div className={`status ${jobStatus}`}>{jobStatus}</div>
         <footer className="actions">

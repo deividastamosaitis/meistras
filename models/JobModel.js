@@ -9,6 +9,7 @@ const JobSchema = new mongoose.Schema(
     email: String,
     lat: String,
     lng: String,
+    createdUser: String,
     jobStatus: {
       type: String,
       enum: Object.values(JOB_STATUS),

@@ -60,10 +60,12 @@ const AddJob = () => {
           >
             <FormRow type="text" labelText={"adresas"} />
           </AddressAutofill>
+
           <div className="lat-lng">
             <FormRow name="adresas" defaultValue={fullAddress}></FormRow>
             <FormRow name="lat" defaultValue={lat} />
             <FormRow name="lng" defaultValue={lng} />
+            <FormRow type="text" defaultValue={user.name} name="createdUser" />
           </div>
 
           <FormRowSelect

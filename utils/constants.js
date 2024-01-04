@@ -1,7 +1,7 @@
 export const JOB_STATUS = {
   Expo: "Ekspozicija",
   Montavimas: "Montavimas",
-  Montavimas_Skubus: "Montavimas-SKUBU",
+  MontavimasSkubu: "Montavimas-SKUBU",
   Baigta: "Baigta",
 };
 

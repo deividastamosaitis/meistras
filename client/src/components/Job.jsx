@@ -32,6 +32,8 @@ const Job = ({
               ? "ekspozicija"
               : jobStatus === "Baigta"
               ? "baigta"
+              : jobStatus === "Montavimas-SKUBU"
+              ? "montavimas-skubu"
               : "montavimas"
           }`}
         >

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const Wrapper = styled.article`
   background: var(--background-secondary-color);
@@ -34,6 +34,9 @@ const Wrapper = styled.article`
   }
   .montavimas {
     background: #d66a6a;
+  }
+  .montavimas-skubu {
+    background: #802b2b;
   }
   .info {
     h5 {

@@ -1,12 +1,12 @@
-import Map, { Marker, Popup } from 'react-map-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import customFetch from '../utils/customFetch';
-import { useLoaderData, Link } from 'react-router-dom';
-import { useContext, createContext, useState } from 'react';
+import Map, { Marker, Popup } from "react-map-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+import customFetch from "../utils/customFetch";
+import { useLoaderData, Link } from "react-router-dom";
+import { useContext, createContext, useState } from "react";
 
 export const loader = async () => {
   try {
-    const { data } = await customFetch.get('/jobs');
+    const { data } = await customFetch.get("/jobs");
 
     return { data };
   } catch (error) {
@@ -31,7 +31,7 @@ const ZemelapisObjektu = () => {
           latitude: 55.28833,
           zoom: 6,
         }}
-        style={{ width: '100%', height: '100svh' }}
+        style={{ width: "100%", height: "100svh" }}
         mapStyle="mapbox://styles/mapbox/streets-v10"
       >
         {jobs.map((job) => {
@@ -45,11 +45,13 @@ const ZemelapisObjektu = () => {
                 setPopupInfo(job);
               }}
               color={
-                job.jobStatus === 'Montavimas'
-                  ? 'red'
-                  : job.jobStatus === 'Baigta'
-                  ? 'black'
-                  : 'green'
+                job.jobStatus === "Montavimas"
+                  ? "red"
+                  : job.jobStatus === "Baigta"
+                  ? "black"
+                  : job.jobStatus === "Montavimas-SKUBU"
+                  ? "#802b2b"
+                  : "green"
               }
             ></Marker>
           );

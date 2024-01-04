@@ -38,6 +38,9 @@ const Wrapper = styled.article`
   .montavimas-skubu {
     background: #802b2b;
   }
+  .Montavimas-SKUBU {
+    background: #802b2b;
+  }
   .info {
     h5 {
       margin-bottom: 0.5rem;

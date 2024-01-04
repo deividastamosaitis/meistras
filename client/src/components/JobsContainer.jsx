@@ -1,14 +1,14 @@
-import Job from './Job';
-import Wrapper from '../assets/wrappers/JobsContainer';
-import { useAllJobsContext } from '../pages/AllJobs';
-import { useState } from 'react';
+import Job from "./Job";
+import Wrapper from "../assets/wrappers/JobsContainer";
+import { useAllJobsContext } from "../pages/AllJobs";
+import { useState } from "react";
 
 const JobsContainer = () => {
   const { data } = useAllJobsContext();
   const { jobs } = data;
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const ItemToFilter = jobs.filter((value) => {
-    if (selectedCategory === 'All') {
+    if (selectedCategory === "All") {
       return true;
     } else {
       return value.jobStatus === selectedCategory;
@@ -27,36 +27,43 @@ const JobsContainer = () => {
         <button
           className="btn filter-btn baigta"
           value="Baigta"
-          onClick={(e) => setSelectedCategory('Baigta')}
+          onClick={(e) => setSelectedCategory("Baigta")}
         >
           Baigta
         </button>
         <button
           className="btn filter-btn montavimas"
-          value="Montavimas"
-          onClick={(e) => setSelectedCategory('Montavimas')}
+          value={"Montavimas"}
+          onClick={(e) => setSelectedCategory("Montavimas")}
         >
           Montavimas
         </button>
         <button
+          className="btn filter-btn montavimas-SKUBU"
+          value={"Montavimas-SKUBU"}
+          onClick={(e) => setSelectedCategory("Montavimas-SKUBU")}
+        >
+          Jopapa, darom greiciau
+        </button>
+        <button
           className="btn filter-btn ekspozicija"
           value="Ekspozicija"
-          onClick={(e) => setSelectedCategory('Ekspozicija')}
+          onClick={(e) => setSelectedCategory("Ekspozicija")}
         >
           Ekspozicija
         </button>
         <button
           className="btn filter-btn"
           value="All"
-          onClick={(e) => setSelectedCategory('All')}
+          onClick={(e) => setSelectedCategory("All")}
         >
           Visi objektai
         </button>
       </div>
       <div className="jobs">
-        {ItemToFilter.map((job) => (
-          <Job key={job._id} {...job} />
-        ))}
+        {ItemToFilter.map((job) => <Job key={job._id} {...job} />)
+          .sort()
+          .reverse()}
       </div>
     </Wrapper>
   );

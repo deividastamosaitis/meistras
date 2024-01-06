@@ -22,6 +22,7 @@ const ZemelapisObjektu = () => {
   const { jobs } = data;
   const wazeURL = `https://waze.com/ul?ll=`;
   const [popupInfo, setPopupInfo] = useState(null);
+
   return (
     <ZemelapisObjektuContext.Provider value={{ data }}>
       <Map
@@ -35,11 +36,13 @@ const ZemelapisObjektu = () => {
         mapStyle="mapbox://styles/mapbox/streets-v10"
       >
         {jobs.map((job) => {
+          const baigtaStyle = job.jobStatus === "Baigta" ? "50%" : "1";
           return (
             <Marker
               key={job._id}
               latitude={job.lat}
               longitude={job.lng}
+              style={{ opacity: baigtaStyle }}
               onClick={(e) => {
                 e.originalEvent.stopPropagation();
                 setPopupInfo(job);

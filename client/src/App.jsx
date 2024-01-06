@@ -12,6 +12,7 @@ import {
   Profile,
   Admin,
   EditJob,
+  DetailJob,
 } from './pages';
 
 import { action as registerAction } from './pages/Register';
@@ -22,6 +23,7 @@ import { action as deleteJobAction } from './pages/DeleteJob';
 import { loader as dashboardLoader } from './pages/DashboardLayout';
 import { loader as allJobsLoader } from './pages/AllJobs';
 import { loader as editJobLoader } from './pages/EditJob';
+import { loader as detailJobLoader } from './pages/EditJob';
 import { loader as allObjektuZemelapis } from './pages/ZemelapisObjektu';
 
 export const checkDefaultTheme = () => {
@@ -85,6 +87,11 @@ const router = createBrowserRouter([
             element: <EditJob />,
             loader: editJobLoader,
             action: editJobAction,
+          },
+          {
+            path: 'detail-job/:id',
+            element: <DetailJob />,
+            loader: detailJobLoader,
           },
           { path: 'delete-job/:id', action: deleteJobAction },
         ],

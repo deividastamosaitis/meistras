@@ -1,40 +1,26 @@
-import Job from "./Job";
-import Wrapper from "../assets/wrappers/JobsContainer";
-import { useAllJobsContext } from "../pages/AllJobs";
-import { useState } from "react";
+import Job from './Job';
+import Wrapper from '../assets/wrappers/JobsContainer';
+import { useAllJobsContext } from '../pages/AllJobs';
+import { useState } from 'react';
 
 const JobsContainer = () => {
   const { data } = useAllJobsContext();
   const { jobs } = data;
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [activeBtnBaigti, setActiveBtnBaigti] = useState(false);
-  const [activeBtnMontavimas, setActiveBtnMontavimas] = useState(false);
-  const [activeBtnMontavimasSkubu, setActiveBtnMontavimasSkubu] =
-    useState(false);
-  const [activeBtnEkspozicija, setActiveBtnEkspozicija] = useState(false);
-  const [activeBtnAll, setActiveBtnAll] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [activeBtn, setActiveBtn] = useState(5);
+
+  const handleActiveBtn = (buttonId) => {
+    setActiveBtn(buttonId);
+  };
+
   const ItemToFilter = jobs.filter((value) => {
-    if (selectedCategory === "All") {
+    if (selectedCategory === 'All') {
       return true;
     } else {
       return value.jobStatus === selectedCategory;
     }
   });
-  const toggleActiveBtnBaigti = () => {
-    setActiveBtnBaigti(!activeBtnBaigti);
-  };
-  const toggleActiveBtnMontavimas = () => {
-    setActiveBtnMontavimas(!activeBtnMontavimas);
-  };
-  const toggleActiveBtnMontavimasSkubu = () => {
-    setActiveBtnMontavimasSkubu(!activeBtnMontavimasSkubu);
-  };
-  const toggleActiveBtnEkspozicija = () => {
-    setActiveBtnEkspozicija(!activeBtnEkspozicija);
-  };
-  const toggleActiveBtnAll = () => {
-    setActiveBtnAll(!activeBtnAll);
-  };
+
   if (jobs.length === 0) {
     return (
       <Wrapper>
@@ -46,64 +32,61 @@ const JobsContainer = () => {
     <Wrapper>
       <div className="content-center-filters">
         <button
-          className={
-            activeBtnBaigti
-              ? "btn filter-btn baigta-active"
-              : "btn filter-btn baigta"
-          }
-          value="Baigta"
-          onClick={(e) => (
-            setSelectedCategory("Baigta"), toggleActiveBtnBaigti()
-          )}
+          className={activeBtn === 5 ? 'btn filter-btn visi' : 'btn filter-btn'}
+          value="All"
+          onClick={(e) => (setSelectedCategory('All'), handleActiveBtn(5))}
         >
-          Baigta
+          Visi objektai
         </button>
         <button
           className={
-            activeBtnMontavimas
-              ? "btn filter-btn montavimas-active"
-              : "btn filter-btn montavimas"
+            activeBtn === 4
+              ? 'btn filter-btn ekspozicija-active'
+              : 'btn filter-btn ekspozicija'
           }
-          value={"Montavimas"}
+          value="Ekspozicija"
           onClick={(e) => (
-            setSelectedCategory("Montavimas"), toggleActiveBtnMontavimas()
+            setSelectedCategory('Ekspozicija'), handleActiveBtn(4)
+          )}
+        >
+          Ekspozicija
+        </button>
+        <button
+          className={
+            activeBtn === 2
+              ? 'btn filter-btn montavimas-active'
+              : 'btn filter-btn montavimas'
+          }
+          value={'Montavimas'}
+          onClick={(e) => (
+            setSelectedCategory('Montavimas'), handleActiveBtn(2)
           )}
         >
           Montavimas
         </button>
         <button
           className={
-            activeBtnMontavimasSkubu
-              ? "btn filter-btn montavimas-SKUBU-active"
-              : "btn filter-btn montavimas-SKUBU"
+            activeBtn === 3
+              ? 'btn filter-btn montavimas-SKUBU-active'
+              : 'btn filter-btn montavimas-SKUBU'
           }
-          value={"Montavimas-SKUBU"}
+          value={'Montavimas-SKUBU'}
           onClick={(e) => (
-            setSelectedCategory("Montavimas-SKUBU"),
-            toggleActiveBtnMontavimasSkubu()
+            setSelectedCategory('Montavimas-SKUBU'), handleActiveBtn(3)
           )}
         >
           Jopapa, darom greiciau
         </button>
         <button
           className={
-            activeBtnEkspozicija
-              ? "btn filter-btn ekspozicija-active"
-              : "btn filter-btn ekspozicija"
+            activeBtn === 1
+              ? 'btn filter-btn baigta-active'
+              : 'btn filter-btn baigta'
           }
-          value="Ekspozicija"
-          onClick={(e) => (
-            setSelectedCategory("Ekspozicija"), toggleActiveBtnEkspozicija()
-          )}
+          value="Baigta"
+          onClick={(e) => (setSelectedCategory('Baigta'), handleActiveBtn(1))}
         >
-          Ekspozicija
-        </button>
-        <button
-          className={activeBtnAll ? "btn filter-btn" : "btn filter-btn"}
-          value="All"
-          onClick={(e) => (setSelectedCategory("All"), toggleActiveBtnAll())}
-        >
-          Visi objektai
+          Baigta
         </button>
       </div>
       <div className="jobs">

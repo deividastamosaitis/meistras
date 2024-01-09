@@ -37,29 +37,31 @@ const ZemelapisObjektu = () => {
       >
         {jobs.map((job) => {
           const baigtaStyle = job.jobStatus === 'Baigta' ? '50%' : '1';
-          return (
-            <Marker
-              key={job._id}
-              latitude={job.lat}
-              longitude={job.lng}
-              style={{ opacity: baigtaStyle, cursor: 'pointer' }}
-              onClick={(e) => {
-                e.originalEvent.stopPropagation();
-                if (job.jobStatus != 'Baigta') {
-                  setPopupInfo(job);
+          if (job.jobStatus != 'Baigta') {
+            return (
+              <Marker
+                key={job._id}
+                latitude={job.lat}
+                longitude={job.lng}
+                style={{ opacity: baigtaStyle, cursor: 'pointer' }}
+                onClick={(e) => {
+                  e.originalEvent.stopPropagation();
+                  if (job.jobStatus != 'Baigta') {
+                    setPopupInfo(job);
+                  }
+                }}
+                color={
+                  job.jobStatus === 'Montavimas'
+                    ? 'red'
+                    : job.jobStatus === 'Baigta'
+                    ? 'black'
+                    : job.jobStatus === 'Montavimas-SKUBU'
+                    ? '#802b2b'
+                    : 'green'
                 }
-              }}
-              color={
-                job.jobStatus === 'Montavimas'
-                  ? 'red'
-                  : job.jobStatus === 'Baigta'
-                  ? 'black'
-                  : job.jobStatus === 'Montavimas-SKUBU'
-                  ? '#802b2b'
-                  : 'green'
-              }
-            ></Marker>
-          );
+              ></Marker>
+            );
+          }
         })}
         {popupInfo && (
           <>

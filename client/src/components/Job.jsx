@@ -23,8 +23,10 @@ const Job = ({
   adresas,
   info,
   createdUser,
+  updatedAt,
 }) => {
-  const date = day(createdAt).format('YYYY-MM-D');
+  const date = day(createdAt).format('YYYY-MM-DD');
+  const edit = day(updatedAt).format('YYYY-MM-D H:m');
   return (
     <Wrapper>
       <header>
@@ -54,12 +56,12 @@ const Job = ({
       <div className="content">
         <div className="content-center">
           <JobInfo icon={<FaLocationArrow />} text={adresas} />
-          <JobInfo icon={<FaCalendarAlt />} text={`Registruota: ${date}`} />
-          <JobInfo icon={<FaInfoCircle />} text={info} />
           <JobInfo
-            icon={<FaRegEdit />}
-            text={createdUser ? createdUser : 'Demo'}
+            icon={<FaCalendarAlt />}
+            text={`Registruota: ${date} ${createdUser ? createdUser : 'Demo'}`}
           />
+          <JobInfo icon={<FaInfoCircle />} text={info} />
+          <JobInfo icon={<FaRegEdit />} text={`Redaguota: ${edit}`} />
         </div>
         <div className={`status ${jobStatus}`}>{jobStatus}</div>
         <footer className="actions">

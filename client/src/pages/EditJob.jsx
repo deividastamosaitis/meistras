@@ -81,9 +81,9 @@ const EditJob = () => {
           </AddressAutofill>
 
           <div className="lat-lng">
-            <FormRow name="adresas" defaultValue={job.adresas}></FormRow>
-            <FormRow name="lat" defaultValue={job.lat} />
-            <FormRow name="lng" defaultValue={job.lng} />
+            <FormRow name="adresas" defaultValue={fullAddress}></FormRow>
+            <FormRow name="lat" defaultValue={lat} />
+            <FormRow name="lng" defaultValue={lng} />
           </div>
 
           <FormRowSelect

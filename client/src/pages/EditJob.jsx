@@ -1,12 +1,13 @@
-import { FormRow, FormRowSelect } from '../components';
-import Wrapper from '../assets/wrappers/DashboardFormPage';
-import { useLoaderData, useParams } from 'react-router-dom';
-import { JOB_STATUS, JOB_TYPE } from '../../../utils/constants';
-import { Form, useNavigation, redirect } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { useState, useCallback } from 'react';
-import { AddressAutofill } from '@mapbox/search-js-react';
-import customFetch from '../utils/customFetch';
+import { FormRow, FormRowSelect } from "../components";
+import Wrapper from "../assets/wrappers/DashboardFormPage";
+import { useLoaderData, useParams } from "react-router-dom";
+import { JOB_STATUS, JOB_TYPE } from "../../../utils/constants";
+import { Form, useNavigation, redirect } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useState, useCallback } from "react";
+import { AddressAutofill } from "@mapbox/search-js-react";
+import customFetch from "../utils/customFetch";
+import { handle } from "express/lib/router";
 
 export const loader = async ({ params }) => {
   try {
@@ -14,7 +15,7 @@ export const loader = async ({ params }) => {
     return data;
   } catch (error) {
     toast.error(error?.response?.data?.msg);
-    return redirect('/dashboard/all-jobs');
+    return redirect("/dashboard/all-jobs");
   }
 };
 export const action = async ({ request, params }) => {
@@ -22,8 +23,8 @@ export const action = async ({ request, params }) => {
   const data = Object.fromEntries(formData);
   try {
     await customFetch.patch(`/jobs/${params.id}`, data);
-    toast.success('Objektas redaguotas');
-    return redirect('/dashboard/all-jobs');
+    toast.success("Objektas redaguotas");
+    return redirect("/dashboard/all-jobs");
   } catch (error) {
     toast.error(error?.response?.data?.msg);
     return error;
@@ -31,12 +32,14 @@ export const action = async ({ request, params }) => {
 };
 
 const EditJob = () => {
+  const { job } = useLoaderData();
   const [feature, setFeature] = useState({});
   const [lng, setLng] = useState();
   const [lat, setLat] = useState();
   const [fullAddress, setFullAddress] = useState();
   console.log(lng, lat);
   console.log(feature);
+  console.log(fullAddress);
   const handleAddres = useCallback(
     (res) => {
       const feature = res.features[0];
@@ -51,9 +54,14 @@ const EditJob = () => {
     [setFullAddress]
   );
 
-  const { job } = useLoaderData();
+  const changeAddress = () => {
+    setFullAddress(feature.properties.full_address);
+    setLng(feature.geometry.coordinates[0]);
+    setLat(feature.geometry.coordinates[1]);
+  };
+
   const navigation = useNavigation();
-  const isSubmitting = navigation.state === 'pridedama';
+  const isSubmitting = navigation.state === "pridedama";
   return (
     <Wrapper>
       <Form method="post" className="form">
@@ -75,15 +83,36 @@ const EditJob = () => {
           >
             <FormRow
               type="text"
-              labelText={'adresas'}
+              labelText={"Adresas"}
               defaultValue={job.adresas}
             />
           </AddressAutofill>
 
           <div className="lat-lng">
-            <FormRow name="adresas" defaultValue={fullAddress}></FormRow>
-            <FormRow name="lat" defaultValue={lat} />
-            <FormRow name="lng" defaultValue={lng} />
+            <input
+              type="text"
+              name="adresas"
+              id="adresas"
+              defaultValue={job.adresas}
+              value={fullAddress}
+              onChange={changeAddress}
+            />
+            <input
+              type="text"
+              name="lat"
+              id="lat"
+              defaultValue={job.lat}
+              value={lat}
+              onChange={changeAddress}
+            />
+            <input
+              type="text"
+              name="lng"
+              id="lng"
+              defaultValue={job.lng}
+              value={lng}
+              onChange={changeAddress}
+            />
           </div>
 
           <FormRowSelect
@@ -105,7 +134,7 @@ const EditJob = () => {
             className="btn btn-block form-btn"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'pridedama...' : 'redaguoti'}
+            {isSubmitting ? "pridedama..." : "redaguoti"}
           </button>
         </div>
       </Form>

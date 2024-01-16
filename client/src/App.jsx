@@ -13,6 +13,7 @@ import {
   Admin,
   EditJob,
   DetailJob,
+  Kalendior,
 } from './pages';
 
 import { action as registerAction } from './pages/Register';
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
             path: 'zemelapis-objektu',
             element: <ZemelapisObjektu />,
             loader: allObjektuZemelapis,
+          },
+          {
+            path: 'kalendorius',
+            element: <Kalendior />,
           },
           {
             path: 'all-jobs',

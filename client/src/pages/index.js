@@ -10,4 +10,5 @@ export { default as AddJob } from './AddJob';
 export { default as EditJob } from './EditJob';
 export { default as Profile } from './Profile';
 export { default as Admin } from './Admin';
+export { default as Kalendior } from './Kalendior';
 export { default as DetailJob } from './DetailJob';

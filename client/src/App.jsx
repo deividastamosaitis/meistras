@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import {
   HomeLayout,
   Landing,
@@ -14,22 +14,23 @@ import {
   EditJob,
   DetailJob,
   Kalendior,
-} from './pages';
+} from "./pages";
 
-import { action as registerAction } from './pages/Register';
-import { action as loginAction } from './pages/Login';
-import { action as addJobAction } from './pages/AddJob';
-import { action as editJobAction } from './pages/EditJob';
-import { action as deleteJobAction } from './pages/DeleteJob';
-import { loader as dashboardLoader } from './pages/DashboardLayout';
-import { loader as allJobsLoader } from './pages/AllJobs';
-import { loader as editJobLoader } from './pages/EditJob';
-import { loader as detailJobLoader } from './pages/EditJob';
-import { loader as allObjektuZemelapis } from './pages/ZemelapisObjektu';
+import { action as registerAction } from "./pages/Register";
+import { action as loginAction } from "./pages/Login";
+import { action as addJobAction } from "./pages/AddJob";
+import { action as editJobAction } from "./pages/EditJob";
+import { action as deleteJobAction } from "./pages/DeleteJob";
+import { loader as dashboardLoader } from "./pages/DashboardLayout";
+import { loader as allJobsLoader } from "./pages/AllJobs";
+import { loader as editJobLoader } from "./pages/EditJob";
+import { loader as detailJobLoader } from "./pages/EditJob";
+import { loader as allObjektuZemelapis } from "./pages/ZemelapisObjektu";
+import { loader as kalendiorDienos } from "./pages/Kalendior";
 
 export const checkDefaultTheme = () => {
-  const isDarkTheme = localStorage.getItem('darkTheme') === 'true';
-  document.body.classList.toggle('dark-theme', isDarkTheme);
+  const isDarkTheme = localStorage.getItem("darkTheme") === "true";
+  document.body.classList.toggle("dark-theme", isDarkTheme);
   return isDarkTheme;
 };
 
@@ -37,7 +38,7 @@ checkDefaultTheme();
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <HomeLayout />,
     errorElement: <Error />,
     children: [
@@ -45,18 +46,18 @@ const router = createBrowserRouter([
         index: true,
         element: <Landing />,
       },
+      // {
+      //   path: "register",
+      //   element: <Register />,
+      //   action: registerAction,
+      // },
       {
-        path: 'register',
-        element: <Register />,
-        action: registerAction,
-      },
-      {
-        path: 'login',
+        path: "login",
         element: <Login />,
         action: loginAction,
       },
       {
-        path: 'dashboard',
+        path: "dashboard",
         element: <DashboardLayout />,
         loader: dashboardLoader,
         children: [
@@ -66,39 +67,40 @@ const router = createBrowserRouter([
             action: addJobAction,
           },
           {
-            path: 'zemelapis-objektu',
+            path: "zemelapis-objektu",
             element: <ZemelapisObjektu />,
             loader: allObjektuZemelapis,
           },
           {
-            path: 'kalendorius',
+            path: "kalendorius",
             element: <Kalendior />,
+            loader: kalendiorDienos,
           },
           {
-            path: 'all-jobs',
+            path: "all-jobs",
             element: <AllJobs />,
             loader: allJobsLoader,
           },
           {
-            path: 'profile',
+            path: "profile",
             element: <Profile />,
           },
           {
-            path: 'admin',
+            path: "admin",
             element: <Admin />,
           },
           {
-            path: 'edit-job/:id',
+            path: "edit-job/:id",
             element: <EditJob />,
             loader: editJobLoader,
             action: editJobAction,
           },
           {
-            path: 'detail-job/:id',
+            path: "detail-job/:id",
             element: <DetailJob />,
             loader: detailJobLoader,
           },
-          { path: 'delete-job/:id', action: deleteJobAction },
+          { path: "delete-job/:id", action: deleteJobAction },
         ],
       },
     ],

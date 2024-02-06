@@ -1,13 +1,13 @@
-import { FormRow, FormRowSelect } from "../components";
-import Wrapper from "../assets/wrappers/DashboardFormPage";
-import { useLoaderData, useParams } from "react-router-dom";
-import { JOB_STATUS, JOB_TYPE } from "../../../utils/constants";
-import { Form, useNavigation, redirect } from "react-router-dom";
-import { toast } from "react-toastify";
-import { useState, useCallback } from "react";
-import { AddressAutofill } from "@mapbox/search-js-react";
-import customFetch from "../utils/customFetch";
-import { handle } from "express/lib/router";
+import { FormRow, FormRowSelect } from '../components';
+import Wrapper from '../assets/wrappers/DashboardFormPage';
+import { useLoaderData, useParams } from 'react-router-dom';
+import { JOB_STATUS, JOB_TYPE } from '../../../utils/constants';
+import { Form, useNavigation, redirect } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useState, useCallback } from 'react';
+import { AddressAutofill } from '@mapbox/search-js-react';
+import customFetch from '../utils/customFetch';
+import { handle } from 'express/lib/router';
 
 export const loader = async ({ params }) => {
   try {
@@ -15,7 +15,7 @@ export const loader = async ({ params }) => {
     return data;
   } catch (error) {
     toast.error(error?.response?.data?.msg);
-    return redirect("/dashboard/all-jobs");
+    return redirect('/dashboard/all-jobs');
   }
 };
 export const action = async ({ request, params }) => {
@@ -23,8 +23,8 @@ export const action = async ({ request, params }) => {
   const data = Object.fromEntries(formData);
   try {
     await customFetch.patch(`/jobs/${params.id}`, data);
-    toast.success("Objektas redaguotas");
-    return redirect("/dashboard/all-jobs");
+    toast.success('Objektas redaguotas');
+    return redirect('/dashboard/all-jobs');
   } catch (error) {
     toast.error(error?.response?.data?.msg);
     return error;
@@ -61,7 +61,7 @@ const EditJob = () => {
   };
 
   const navigation = useNavigation();
-  const isSubmitting = navigation.state === "pridedama";
+  const isSubmitting = navigation.state === 'pridedama';
   return (
     <Wrapper>
       <Form method="post" className="form">
@@ -83,7 +83,7 @@ const EditJob = () => {
           >
             <FormRow
               type="text"
-              labelText={"Adresas"}
+              labelText={'Adresas'}
               defaultValue={job.adresas}
             />
           </AddressAutofill>
@@ -125,7 +125,7 @@ const EditJob = () => {
             <label htmlFor="info" className="form-label">
               Papildoma info
             </label>
-            <textarea name="info" className="form-input">
+            <textarea name="info" className="form-textarea">
               {job.info}
             </textarea>
           </div>
@@ -134,7 +134,7 @@ const EditJob = () => {
             className="btn btn-block form-btn"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "pridedama..." : "redaguoti"}
+            {isSubmitting ? 'pridedama...' : 'redaguoti'}
           </button>
         </div>
       </Form>

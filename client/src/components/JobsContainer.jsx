@@ -79,6 +79,19 @@ const JobsContainer = () => {
         </button>
         <button
           className={
+            activeBtn === 6
+              ? 'btn filter-btn pasiulyta-active'
+              : 'btn filter-btn pasiulyta'
+          }
+          value={'Pasiulyta'}
+          onClick={(e) => (
+            setSelectedCategory('Pasiulyta'), handleActiveBtn(6)
+          )}
+        >
+          Pasiūlyta
+        </button>
+        <button
+          className={
             activeBtn === 1
               ? 'btn filter-btn baigta-active'
               : 'btn filter-btn baigta'

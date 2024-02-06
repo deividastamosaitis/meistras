@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Wrapper = styled.section`
   margin-top: 4rem;
@@ -33,6 +33,10 @@ const Wrapper = styled.section`
     background: #064704;
     box-shadow: 2px 2px 3px #064704;
   }
+  .pasiulyta {
+    background: #fcba05;
+    box-shadow: 2px 2px 3px #fcba05;
+  }
   .montavimas {
     background: #d66a6a;
     box-shadow: 2px 2px 3px #d66a6a;
@@ -48,6 +52,11 @@ const Wrapper = styled.section`
   }
   .ekspozicija-active {
     background: #064704 !important;
+    color: #fff !important;
+    box-shadow: var(--shadow-2);
+  }
+  .pasiulyta-active {
+    background: #fcba05 !important;
     color: #fff !important;
     box-shadow: var(--shadow-2);
   }

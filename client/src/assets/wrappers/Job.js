@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Wrapper = styled.article`
   background: var(--background-secondary-color);
@@ -40,6 +40,9 @@ const Wrapper = styled.article`
   }
   .Montavimas-SKUBU {
     background: #802b2b;
+  }
+  .Pasiulyta {
+    background: #fcba05;
   }
   .info {
     h5 {

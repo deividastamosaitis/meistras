@@ -38,6 +38,8 @@ const Job = ({
               ? 'baigta'
               : jobStatus === 'Montavimas-SKUBU'
               ? 'montavimas-skubu'
+              : jobStatus === 'Pasiulyta'
+              ? 'pasiulyta'
               : 'montavimas'
           }`}
         >

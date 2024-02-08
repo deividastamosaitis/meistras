@@ -1,5 +1,7 @@
 import Job from '../models/JobModel.js';
 import { StatusCodes } from 'http-status-codes';
+import cloudinary from 'cloudinary';
+import { promises as fs } from 'fs';
 
 export const getAllJobs = async (req, res) => {
   // const jobs = await Job.find({ createdBy: req.user.userId });
@@ -19,9 +21,22 @@ export const getJob = async (req, res) => {
 };
 
 export const updateJob = async (req, res) => {
+  const newJob = { ...req.body };
+  console.log(req.file);
+
+  if (req.file) {
+    const response = await cloudinary.v2.uploader.upload(req.file.path);
+    await fs.unlink(req.file.path);
+    req.body.image = response.secure_url;
+    req.body.imageId = response.public_id;
+  }
   const updatedJob = await Job.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   });
+  if (req.file && updatedJob.imageId) {
+    await cloudinary.v2.uploader.destroy(updatedJob.imageId);
+  }
+
   res.status(StatusCodes.OK).json({ msg: 'job modified', job: updatedJob });
 };
 

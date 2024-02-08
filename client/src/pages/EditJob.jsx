@@ -20,15 +20,27 @@ export const loader = async ({ params }) => {
 };
 export const action = async ({ request, params }) => {
   const formData = await request.formData();
-  const data = Object.fromEntries(formData);
+  const file = formData.get('image');
+  if (file && file.size > 5000000) {
+    toast.error('Nuotrauka per didele');
+    return null;
+  }
   try {
-    await customFetch.patch(`/jobs/${params.id}`, data);
+    await customFetch.patch(`/jobs/${params.id}`, formData);
     toast.success('Objektas redaguotas');
-    return redirect('/dashboard/all-jobs');
   } catch (error) {
     toast.error(error?.response?.data?.msg);
-    return error;
   }
+  return null;
+  // const data = Object.fromEntries(formData);
+  // try {
+  //   await customFetch.patch(`/jobs/${params.id}`, data);
+  //   toast.success('Objektas redaguotas');
+  //   return redirect('/dashboard/all-jobs');
+  // } catch (error) {
+  //   toast.error(error?.response?.data?.msg);
+  //   return error;
+  // }
 };
 
 const EditJob = () => {
@@ -64,7 +76,12 @@ const EditJob = () => {
   const isSubmitting = navigation.state === 'pridedama';
   return (
     <Wrapper>
-      <Form method="post" className="form">
+      {job.image ? (
+        <img src={job.image} alt="nuotrauka" className="" />
+      ) : (
+        'Ner nuotraukos'
+      )}
+      <Form method="post" className="form" encType="multipart/form-data">
         <h4 className="form-title">Redaguoti objektą</h4>
         <div className="form-center">
           <FormRow type="text" name="vardas" defaultValue={job.vardas} />
@@ -128,6 +145,18 @@ const EditJob = () => {
             <textarea name="info" className="form-textarea">
               {job.info}
             </textarea>
+          </div>
+          <div className="form-row">
+            <label htmlFor="image" className="form-labe">
+              Pasirinkite nuotrauka (max 0.5MB)
+            </label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              className="form-input"
+              accept="image/*"
+            />
           </div>
           <button
             type="submit"

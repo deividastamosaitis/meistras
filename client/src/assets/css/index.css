@@ -170,6 +170,7 @@ ul {
   width: 100%;
   display: block;
   object-fit: cover;
+  padding: 10px;
 }
 /* buttons */
 

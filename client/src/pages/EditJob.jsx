@@ -21,7 +21,7 @@ export const loader = async ({ params }) => {
 export const action = async ({ request, params }) => {
   const formData = await request.formData();
   const file = formData.get('image');
-  if (file && file.size > 5000000) {
+  if (file && file.size > 500000) {
     toast.error('Nuotrauka per didele');
     return null;
   }
@@ -77,9 +77,9 @@ const EditJob = () => {
   return (
     <Wrapper>
       {job.image ? (
-        <img src={job.image} alt="nuotrauka" className="" />
+        <img src={job.image} alt="nuotrauka" className="img" />
       ) : (
-        'Ner nuotraukos'
+        <></>
       )}
       <Form method="post" className="form" encType="multipart/form-data">
         <h4 className="form-title">Redaguoti objektą</h4>
@@ -147,7 +147,7 @@ const EditJob = () => {
             </textarea>
           </div>
           <div className="form-row">
-            <label htmlFor="image" className="form-labe">
+            <label htmlFor="image" className="form-label">
               Pasirinkite nuotrauka (max 0.5MB)
             </label>
             <input

@@ -28,7 +28,7 @@ export const updateJob = async (req, res) => {
     const response = await cloudinary.v2.uploader.upload(req.file.path);
     await fs.unlink(req.file.path);
     req.body.image = response.secure_url;
-    req.body.imageId = response.public_id;
+    req.body.imageId = response.imageId;
   }
   const updatedJob = await Job.findByIdAndUpdate(req.params.id, req.body, {
     new: true,

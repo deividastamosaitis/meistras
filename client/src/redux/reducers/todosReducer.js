@@ -13,7 +13,11 @@ export const todosReducers = (state = [], action) => {
     case actionTypes.UPDATE_DARBAS:
       return state.map((todo) =>
         todo._id === action.payload._id
-          ? { ...todo, data: action.payload.data }
+          ? {
+              ...todo,
+              data: action.payload.data,
+              username: action.payload.data,
+            }
           : todo
       );
     case actionTypes.DELETE_DARBAS:

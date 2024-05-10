@@ -2,8 +2,10 @@ import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addNewDarbas } from "../redux/actions";
+import { useOutletContext } from "react-router-dom";
 
 const DarbaiForma = () => {
+  const { user } = useOutletContext();
   const [text, setText] = useState("");
 
   const dispatch = useDispatch();
@@ -19,7 +21,6 @@ const DarbaiForma = () => {
   const onInputChange = (e) => {
     setText(e.target.value);
   };
-
   return (
     <form className="form" onSubmit={onFormSubmit}>
       <input

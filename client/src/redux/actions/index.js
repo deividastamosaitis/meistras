@@ -9,9 +9,9 @@ import {
   TOGGLE_TAB,
 } from "./type";
 
-export const addNewDarbas = (data) => async (dispatch) => {
+export const addNewDarbas = (data, username) => async (dispatch) => {
   try {
-    const res = await customFetch.post(`/darbai`, { data });
+    const res = await customFetch.post(`/darbai`, { data, username });
 
     dispatch({ type: ADDNEW_DARBAS, payload: res.data });
   } catch (error) {
@@ -39,9 +39,9 @@ export const toggleDarbas = (id) => async (dispatch) => {
   }
 };
 
-export const updateDarbas = (id, data) => async (dispatch) => {
+export const updateDarbas = (id, data, username) => async (dispatch) => {
   try {
-    const res = await customFetch.patch(`/darbai/${id}`, { data });
+    const res = await customFetch.patch(`/darbai/${id}`, { data, username });
 
     dispatch({ type: UPDATE_DARBAS, payload: res.data });
   } catch (error) {

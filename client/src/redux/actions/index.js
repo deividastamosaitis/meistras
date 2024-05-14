@@ -9,9 +9,9 @@ import {
   TOGGLE_TAB,
 } from "./type";
 
-export const addNewDarbas = (data, username) => async (dispatch) => {
+export const addNewDarbas = (data) => async (dispatch) => {
   try {
-    const res = await customFetch.post(`/darbai`, { data, username });
+    const res = await customFetch.post(`/darbai`, { data });
 
     dispatch({ type: ADDNEW_DARBAS, payload: res.data });
   } catch (error) {

@@ -6,6 +6,7 @@ export const addDarbas = async (req, res) => {
     const newDarbas = await Darbai.create({
       data: req.body.data,
       createdAt: Date.now(),
+      username: req.body.username,
     });
 
     await newDarbas.save();
@@ -47,7 +48,8 @@ export const updateDarbas = async (req, res) => {
   try {
     await Darbai.findOneAndUpdate(
       { _id: req.params.id },
-      { data: req.body.data }
+      { data: req.body.data, username: req.body.username },
+      { new: true }
     );
 
     const darbas = await Darbai.findById(req.params.id);

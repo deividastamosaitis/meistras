@@ -19,7 +19,8 @@ const Darbas = ({ todo }) => {
   };
 
   const toggle = () => {
-    // dispatch(updateDarbas(todo._id, todo.data, user.name));
+    setUserName(user.name);
+    dispatch(updateDarbas(todo._id, text, userName));
     dispatch(toggleDarbas(todo._id));
   };
 
@@ -35,7 +36,7 @@ const Darbas = ({ todo }) => {
         }}
         data-testid="todo-test"
       >
-        <span style={{ display: editing ? "none" : "" }}>{todo?.data}</span>
+        <span style={{ display: editing ? "none" : "" }}>{todo.data}</span>
 
         <form
           style={{ display: editing ? "inline" : "none" }}

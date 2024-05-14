@@ -5,6 +5,7 @@ const DarbaiSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  username: String,
   done: {
     type: Boolean,
     default: false,

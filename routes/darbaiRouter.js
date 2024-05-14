@@ -12,7 +12,7 @@ import {
 router.post("/", addDarbas);
 router.get("/", getAllDarbai);
 router.get("/:id", toggleDarbasDone);
-router.put("/:id", updateDarbas);
+router.patch("/:id", updateDarbas);
 router.delete("/:id", deleteDarbas);
 
 export default router;

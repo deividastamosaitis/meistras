@@ -1,12 +1,12 @@
-import Job from './Job';
-import Wrapper from '../assets/wrappers/JobsContainer';
-import { useAllJobsContext } from '../pages/AllJobs';
-import { useState } from 'react';
+import Job from "./Job";
+import Wrapper from "../assets/wrappers/JobsContainer";
+import { useAllJobsContext } from "../pages/AllJobs";
+import { useState } from "react";
 
 const JobsContainer = () => {
   const { data } = useAllJobsContext();
   const { jobs } = data;
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [activeBtn, setActiveBtn] = useState(5);
 
   const handleActiveBtn = (buttonId) => {
@@ -14,7 +14,7 @@ const JobsContainer = () => {
   };
 
   const ItemToFilter = jobs.filter((value) => {
-    if (selectedCategory === 'All') {
+    if (selectedCategory === "All") {
       return true;
     } else {
       return value.jobStatus === selectedCategory;
@@ -32,34 +32,47 @@ const JobsContainer = () => {
     <Wrapper>
       <div className="content-center-filters">
         <button
-          className={activeBtn === 5 ? 'btn filter-btn visi' : 'btn filter-btn'}
+          className={activeBtn === 5 ? "btn filter-btn visi" : "btn filter-btn"}
           value="All"
-          onClick={(e) => (setSelectedCategory('All'), handleActiveBtn(5))}
+          onClick={(e) => (setSelectedCategory("All"), handleActiveBtn(5))}
         >
           Visi objektai
         </button>
         <button
           className={
             activeBtn === 4
-              ? 'btn filter-btn ekspozicija-active'
-              : 'btn filter-btn ekspozicija'
+              ? "btn filter-btn ekspozicija-active"
+              : "btn filter-btn ekspozicija"
           }
           value="Ekspozicija"
           onClick={(e) => (
-            setSelectedCategory('Ekspozicija'), handleActiveBtn(4)
+            setSelectedCategory("Ekspozicija"), handleActiveBtn(4)
           )}
         >
           Ekspozicija
         </button>
         <button
           className={
-            activeBtn === 2
-              ? 'btn filter-btn montavimas-active'
-              : 'btn filter-btn montavimas'
+            activeBtn === 7
+              ? "btn filter-btn ekspozicija_rytoj-active"
+              : "btn filter-btn ekspozicija_rytoj"
           }
-          value={'Montavimas'}
+          value="Ekspozicija-Rytoj"
           onClick={(e) => (
-            setSelectedCategory('Montavimas'), handleActiveBtn(2)
+            setSelectedCategory("Ekspozicija-Rytoj"), handleActiveBtn(7)
+          )}
+        >
+          Ekspozicija rytoj
+        </button>
+        <button
+          className={
+            activeBtn === 2
+              ? "btn filter-btn montavimas-active"
+              : "btn filter-btn montavimas"
+          }
+          value={"Montavimas"}
+          onClick={(e) => (
+            setSelectedCategory("Montavimas"), handleActiveBtn(2)
           )}
         >
           Montavimas
@@ -67,12 +80,12 @@ const JobsContainer = () => {
         <button
           className={
             activeBtn === 3
-              ? 'btn filter-btn montavimas-SKUBU-active'
-              : 'btn filter-btn montavimas-SKUBU'
+              ? "btn filter-btn montavimas-SKUBU-active"
+              : "btn filter-btn montavimas-SKUBU"
           }
-          value={'Montavimas-SKUBU'}
+          value={"Montavimas-SKUBU"}
           onClick={(e) => (
-            setSelectedCategory('Montavimas-SKUBU'), handleActiveBtn(3)
+            setSelectedCategory("Montavimas-SKUBU"), handleActiveBtn(3)
           )}
         >
           Jopapa, darom greiciau
@@ -80,12 +93,12 @@ const JobsContainer = () => {
         <button
           className={
             activeBtn === 6
-              ? 'btn filter-btn pasiulyta-active'
-              : 'btn filter-btn pasiulyta'
+              ? "btn filter-btn pasiulyta-active"
+              : "btn filter-btn pasiulyta"
           }
-          value={'Pasiulyta'}
+          value={"Pasiulyta"}
           onClick={(e) => (
-            setSelectedCategory('Pasiulyta'), handleActiveBtn(6)
+            setSelectedCategory("Pasiulyta"), handleActiveBtn(6)
           )}
         >
           Pasiūlyta
@@ -93,11 +106,11 @@ const JobsContainer = () => {
         <button
           className={
             activeBtn === 1
-              ? 'btn filter-btn baigta-active'
-              : 'btn filter-btn baigta'
+              ? "btn filter-btn baigta-active"
+              : "btn filter-btn baigta"
           }
           value="Baigta"
-          onClick={(e) => (setSelectedCategory('Baigta'), handleActiveBtn(1))}
+          onClick={(e) => (setSelectedCategory("Baigta"), handleActiveBtn(1))}
         >
           Baigta
         </button>

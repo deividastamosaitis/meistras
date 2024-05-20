@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const Wrapper = styled.section`
   margin-top: 4rem;
@@ -33,6 +33,10 @@ const Wrapper = styled.section`
     background: #064704;
     box-shadow: 2px 2px 3px #064704;
   }
+  .ekspozicija_rytoj {
+    background: #ba298a;
+    box-shadow: 2px 2px 3px #ba298a;
+  }
   .pasiulyta {
     background: #fcba05;
     box-shadow: 2px 2px 3px #fcba05;
@@ -52,6 +56,11 @@ const Wrapper = styled.section`
   }
   .ekspozicija-active {
     background: #064704 !important;
+    color: #fff !important;
+    box-shadow: var(--shadow-2);
+  }
+  .ekspozicija_rytoj-active {
+    background: #ba298a !important;
     color: #fff !important;
     box-shadow: var(--shadow-2);
   }

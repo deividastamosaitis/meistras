@@ -1,13 +1,13 @@
-import Map, { Marker, Popup } from 'react-map-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import customFetch from '../utils/customFetch';
-import { useLoaderData, Link } from 'react-router-dom';
-import Wrapper from '../assets/wrappers/ZemelapisObjektu';
-import { useContext, createContext, useState } from 'react';
+import Map, { Marker, Popup } from "react-map-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+import customFetch from "../utils/customFetch";
+import { useLoaderData, Link } from "react-router-dom";
+import Wrapper from "../assets/wrappers/ZemelapisObjektu";
+import { useContext, createContext, useState } from "react";
 
 export const loader = async () => {
   try {
-    const { data } = await customFetch.get('/jobs');
+    const { data } = await customFetch.get("/jobs");
 
     return { data };
   } catch (error) {
@@ -52,18 +52,18 @@ const ZemelapisObjektu = () => {
             latitude: 55.28833,
             zoom: 6,
           }}
-          style={{ width: '100%', height: '700px' }}
+          style={{ width: "100%", height: "700px" }}
           mapStyle="mapbox://styles/mapbox/streets-v10"
         >
           {jobs.map((job) => {
-            const baigtaStyle = job.jobStatus === 'Baigta' ? '50%' : '1';
-            if (baigta == false || job.jobStatus != 'Baigta') {
+            const baigtaStyle = job.jobStatus === "Baigta" ? "50%" : "1";
+            if (baigta == false || job.jobStatus != "Baigta") {
               return (
                 <Marker
                   key={job._id}
                   latitude={job.lat}
                   longitude={job.lng}
-                  style={{ opacity: baigtaStyle, cursor: 'pointer' }}
+                  style={{ opacity: baigtaStyle, cursor: "pointer" }}
                   onClick={(e) => {
                     e.originalEvent.stopPropagation();
                     // if (job.jobStatus != 'Baigta') {
@@ -71,15 +71,17 @@ const ZemelapisObjektu = () => {
                     // }
                   }}
                   color={
-                    job.jobStatus === 'Montavimas'
-                      ? 'red'
-                      : job.jobStatus === 'Baigta'
-                      ? 'black'
-                      : job.jobStatus === 'Montavimas-SKUBU'
-                      ? '#802b2b'
-                      : job.jobStatus === 'Pasiulyta'
-                      ? '#fcba05'
-                      : 'green'
+                    job.jobStatus === "Montavimas"
+                      ? "red"
+                      : job.jobStatus === "Baigta"
+                      ? "black"
+                      : job.jobStatus === "Montavimas-SKUBU"
+                      ? "#802b2b"
+                      : job.jobStatus === "Ekspozicija-Rytoj"
+                      ? "#ba298a"
+                      : job.jobStatus === "Pasiulyta"
+                      ? "#fcba05"
+                      : "green"
                   }
                 ></Marker>
               );

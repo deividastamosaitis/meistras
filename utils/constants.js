@@ -1,5 +1,6 @@
 export const JOB_STATUS = {
   Expo: "Ekspozicija",
+  ExpoRyt: "Ekspozicija-Rytoj",
   Montavimas: "Montavimas",
   MontavimasSkubu: "Montavimas-SKUBU",
   Pasiulyta: "Pasiulyta",

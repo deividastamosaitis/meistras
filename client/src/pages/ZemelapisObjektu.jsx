@@ -22,6 +22,7 @@ const ZemelapisObjektu = () => {
   const { data } = useLoaderData();
   const { jobs } = data;
   const wazeURL = `https://waze.com/ul?ll=`;
+  const [statusai, setStatusai] = useState(jobs);
   const [popupInfo, setPopupInfo] = useState(null);
   const [baigta, setBaigta] = useState(true);
 
@@ -30,18 +31,85 @@ const ZemelapisObjektu = () => {
     console.log(baigta.toString());
   };
 
+  const handleFilter = (e) => {
+    let stat = e.target.value;
+
+    if (stat === "All") {
+      setStatusai(jobs);
+    } else if (stat === "Ekspozicija") {
+      const filtered = jobs.filter((job) => job.jobStatus === "Ekspozicija");
+      setStatusai(filtered);
+    } else if (stat === "Montavimas") {
+      const filtered = jobs.filter((job) => job.jobStatus === "Montavimas");
+      setStatusai(filtered);
+    } else if (stat === "Montavimas-Skubu") {
+      const filtered = jobs.filter(
+        (job) => job.jobStatus === "Montavimas-SKUBU"
+      );
+      setStatusai(filtered);
+    } else if (stat === "Ekspozicija-Rytoj") {
+      const filtered = jobs.filter(
+        (job) => job.jobStatus === "Ekspozicija-Rytoj"
+      );
+      setStatusai(filtered);
+    } else if (stat === "Pasiulyta") {
+      const filtered = jobs.filter((job) => job.jobStatus === "Pasiulyta");
+      setStatusai(filtered);
+    }
+  };
+
   return (
     <>
       <Wrapper>
-        <div class="checkbox-wrapper-6 box">
-          <label class="checkbox">Rodyti objektus baigti</label>
-          <input
-            class="tgl tgl-light"
-            id="cb1-6"
-            type="checkbox"
-            onClick={handleBaigta}
-          />
-          <label class="tgl-btn" for="cb1-6" />
+        <div className="objektu-mygtukai">
+          <button className="visi-button" value="All" onClick={handleFilter}>
+            <div className="visi-button-icon"></div>
+            <span>Visi objektai</span>
+          </button>
+          <button
+            className="ekspozicija-button"
+            value="Ekspozicija"
+            onClick={handleFilter}
+          >
+            <div className="ekspozicija-button-icon"></div>
+
+            <span>Ekspozicija</span>
+          </button>
+          <button
+            className="ekspozicija-rytoj-button"
+            value="Ekspozicija-Rytoj"
+            onClick={handleFilter}
+          >
+            <div className="ekspozicija-rytoj-button-icon"></div>
+
+            <span>Ekspozicija rytoj</span>
+          </button>
+          <button
+            className="montavimas-button"
+            value="Montavimas"
+            onClick={handleFilter}
+          >
+            <div className="montavimas-button-icon"></div>
+
+            <span>Montavimas</span>
+          </button>
+          <button
+            className="montavimas-skubu-button"
+            value="Montavimas-Skubu"
+            onClick={handleFilter}
+          >
+            <div className="montavimas-skubu-button-icon"></div>
+
+            <span>Montavimas skubu</span>
+          </button>
+          <button
+            className="pasiulyta-button"
+            value="Pasiulyta"
+            onClick={handleFilter}
+          >
+            <div className="pasiulyta-button-icon"></div>
+            <span>Pasiulyta</span>
+          </button>
         </div>
       </Wrapper>
       <ZemelapisObjektuContext.Provider value={{ data }}>
@@ -55,8 +123,8 @@ const ZemelapisObjektu = () => {
           style={{ width: "100%", height: "700px" }}
           mapStyle="mapbox://styles/mapbox/streets-v10"
         >
-          {jobs.map((job) => {
-            const baigtaStyle = job.jobStatus === "Baigta" ? "50%" : "1";
+          {statusai.map((job) => {
+            const baigtaStyle = job.jobStatus === "Baigta" ? "80%" : "1";
             if (baigta == false || job.jobStatus != "Baigta") {
               return (
                 <Marker
@@ -83,7 +151,23 @@ const ZemelapisObjektu = () => {
                       ? "#fcba05"
                       : "green"
                   }
-                ></Marker>
+                >
+                  <div
+                    className={
+                      job.jobStatus === "Montavimas"
+                        ? "montavimas"
+                        : job.jobStatus === "Baigta"
+                        ? "baigta"
+                        : job.jobStatus === "Montavimas-SKUBU"
+                        ? "montavimas-skubu"
+                        : job.jobStatus === "Ekspozicija-Rytoj"
+                        ? "ekspozicija-rytoj"
+                        : job.jobStatus === "Pasiulyta"
+                        ? "pasiulyta"
+                        : "ekspozicija"
+                    }
+                  ></div>
+                </Marker>
               );
             }
           })}
@@ -116,6 +200,16 @@ const ZemelapisObjektu = () => {
           )}
         </Map>
       </ZemelapisObjektuContext.Provider>
+      <div class="checkbox-wrapper-6 box">
+        <label class="checkbox">Rodyti objektus baigti</label>
+        <input
+          class="tgl tgl-light"
+          id="cb1-6"
+          type="checkbox"
+          onClick={handleBaigta}
+        />
+        <label class="tgl-btn" for="cb1-6" />
+      </div>
     </>
   );
 };

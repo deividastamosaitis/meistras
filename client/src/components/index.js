@@ -12,3 +12,4 @@ export { default as DarbaiForma } from "./DarbaiForma";
 export { default as DarbaiContainer } from "./DarbaiContainer";
 export { default as Darbas } from "./Darbas";
 export { default as ReminderForm } from "./ReminderForm";
+export { default as PopupContainer } from "./PopupContainer";

@@ -1,6 +1,7 @@
 import Map, { Marker, Popup } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import customFetch from "../utils/customFetch";
+import { PopupContainer } from "../components";
 import { useLoaderData, Link } from "react-router-dom";
 import Wrapper from "../assets/wrappers/ZemelapisObjektu";
 import { useContext, createContext, useState } from "react";
@@ -180,26 +181,20 @@ const ZemelapisObjektu = () => {
                 latitude={Number(popupInfo.lat)}
                 onClose={() => setPopupInfo(null)}
               >
-                <div className="popup">
-                  {popupInfo.vardas} | {popupInfo.telefonas}
-                  <div className="info-tekstas">{popupInfo.info}</div>
-                </div>
-                <Link
-                  to={`../edit-job/${popupInfo._id}`}
-                  className="btn edit-btn"
-                >
-                  Redaguoti
-                </Link>
-                <a
-                  href={`${wazeURL}${popupInfo.lat},${popupInfo.lng}'&navigate=yes'`}
-                >
-                  <button className="btn edit-btn">Navigacija</button>
-                </a>
+                <PopupContainer
+                  vardas={popupInfo.vardas}
+                  telefonas={popupInfo.telefonas}
+                  info={popupInfo.info}
+                  _id={popupInfo._id}
+                  lat={popupInfo.lat}
+                  lng={popupInfo.lng}
+                />
               </Popup>
             </>
           )}
         </Map>
       </ZemelapisObjektuContext.Provider>
+
       <div class="checkbox-wrapper-6 box">
         <label class="checkbox">Rodyti objektus baigti</label>
         <input

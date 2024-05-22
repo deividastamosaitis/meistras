@@ -25,56 +25,56 @@ const Wrapper = styled.section`
       grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     }
   }
-  .baigta {
+  .baigta-darbai {
     background: #525252;
     box-shadow: 2px 2px 3px #525252;
   }
-  .ekspozicija {
+  .ekspozicija-darbai {
     background: #064704;
     box-shadow: 2px 2px 3px #064704;
   }
-  .ekspozicija_rytoj {
+  .ekspozicija_rytoj-darbai {
     background: #ba298a;
     box-shadow: 2px 2px 3px #ba298a;
   }
-  .pasiulyta {
+  .pasiulyta-darbai {
     background: #fcba05;
     box-shadow: 2px 2px 3px #fcba05;
   }
-  .montavimas {
+  .montavimas-darbai {
     background: #d66a6a;
     box-shadow: 2px 2px 3px #d66a6a;
   }
-  .montavimas-SKUBU {
+  .montavimas-SKUBU-darbai {
     background: #802b2b;
     box-shadow: 2px 2px 3px #802b2b;
   }
-  .baigta-active {
+  .baigta-active-darbai {
     background: #525252 !important;
     color: #fff !important;
     box-shadow: var(--shadow-2);
   }
-  .ekspozicija-active {
+  .ekspozicija-active-darbai {
     background: #064704 !important;
     color: #fff !important;
     box-shadow: var(--shadow-2);
   }
-  .ekspozicija_rytoj-active {
+  .ekspozicija_rytoj-active-darbai {
     background: #ba298a !important;
     color: #fff !important;
     box-shadow: var(--shadow-2);
   }
-  .pasiulyta-active {
+  .pasiulyta-active-darbai {
     background: #fcba05 !important;
     color: #fff !important;
     box-shadow: var(--shadow-2);
   }
-  .montavimas-active {
+  .montavimas-active-darbai {
     background: #d66a6a !important;
     color: #fff !important;
     box-shadow: var(--shadow-2);
   }
-  .montavimas-SKUBU-active {
+  .montavimas-SKUBU-active-darbai {
     background: #802b2b !important;
     color: #fff !important;
     box-shadow: var(--shadow-2);

@@ -41,8 +41,8 @@ const JobsContainer = () => {
         <button
           className={
             activeBtn === 4
-              ? "btn filter-btn ekspozicija-active"
-              : "btn filter-btn ekspozicija"
+              ? "btn filter-btn ekspozicija-active-darbai"
+              : "btn filter-btn ekspozicija-darbai"
           }
           value="Ekspozicija"
           onClick={(e) => (
@@ -54,8 +54,8 @@ const JobsContainer = () => {
         <button
           className={
             activeBtn === 7
-              ? "btn filter-btn ekspozicija_rytoj-active"
-              : "btn filter-btn ekspozicija_rytoj"
+              ? "btn filter-btn ekspozicija_rytoj-active-darbai"
+              : "btn filter-btn ekspozicija_rytoj-darbai"
           }
           value="Ekspozicija-Rytoj"
           onClick={(e) => (
@@ -67,8 +67,8 @@ const JobsContainer = () => {
         <button
           className={
             activeBtn === 2
-              ? "btn filter-btn montavimas-active"
-              : "btn filter-btn montavimas"
+              ? "btn filter-btn montavimas-active-darbai"
+              : "btn filter-btn montavimas-darbai"
           }
           value={"Montavimas"}
           onClick={(e) => (
@@ -80,8 +80,8 @@ const JobsContainer = () => {
         <button
           className={
             activeBtn === 3
-              ? "btn filter-btn montavimas-SKUBU-active"
-              : "btn filter-btn montavimas-SKUBU"
+              ? "btn filter-btn montavimas-SKUBU-active-darbai"
+              : "btn filter-btn montavimas-SKUBU-darbai"
           }
           value={"Montavimas-SKUBU"}
           onClick={(e) => (
@@ -93,8 +93,8 @@ const JobsContainer = () => {
         <button
           className={
             activeBtn === 6
-              ? "btn filter-btn pasiulyta-active"
-              : "btn filter-btn pasiulyta"
+              ? "btn filter-btn pasiulyta-active-darbai"
+              : "btn filter-btn pasiulyta-darbai"
           }
           value={"Pasiulyta"}
           onClick={(e) => (
@@ -106,8 +106,8 @@ const JobsContainer = () => {
         <button
           className={
             activeBtn === 1
-              ? "btn filter-btn baigta-active"
-              : "btn filter-btn baigta"
+              ? "btn filter-btn baigta-active-darbai"
+              : "btn filter-btn baigta-darbai"
           }
           value="Baigta"
           onClick={(e) => (setSelectedCategory("Baigta"), handleActiveBtn(1))}

@@ -1,13 +1,14 @@
-import { FormRow, FormRowSelect } from '../components';
-import Wrapper from '../assets/wrappers/DashboardFormPage';
-import { useLoaderData, useParams } from 'react-router-dom';
-import { JOB_STATUS, JOB_TYPE } from '../../../utils/constants';
-import { Form, useNavigation, redirect } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { useState, useCallback } from 'react';
-import { AddressAutofill } from '@mapbox/search-js-react';
-import customFetch from '../utils/customFetch';
-import { handle } from 'express/lib/router';
+import { FormRow, FormRowSelect } from "../components";
+import Wrapper from "../assets/wrappers/DashboardFormPage";
+import ReminderForm from "../components/ReminderForm";
+import { useLoaderData, useParams } from "react-router-dom";
+import { JOB_STATUS, JOB_TYPE } from "../../../utils/constants";
+import { Form, useNavigation, redirect } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useState, useCallback } from "react";
+import { AddressAutofill } from "@mapbox/search-js-react";
+import customFetch from "../utils/customFetch";
+import { handle } from "express/lib/router";
 
 export const loader = async ({ params }) => {
   try {
@@ -15,19 +16,19 @@ export const loader = async ({ params }) => {
     return data;
   } catch (error) {
     toast.error(error?.response?.data?.msg);
-    return redirect('/dashboard/all-jobs');
+    return redirect("/dashboard/all-jobs");
   }
 };
 export const action = async ({ request, params }) => {
   const formData = await request.formData();
-  const file = formData.get('image');
+  const file = formData.get("image");
   if (file && file.size > 500000) {
-    toast.error('Nuotrauka per didele');
+    toast.error("Nuotrauka per didele");
     return null;
   }
   try {
     await customFetch.patch(`/jobs/${params.id}`, formData);
-    toast.success('Objektas redaguotas');
+    toast.success("Objektas redaguotas");
   } catch (error) {
     toast.error(error?.response?.data?.msg);
   }
@@ -73,7 +74,7 @@ const EditJob = () => {
   };
 
   const navigation = useNavigation();
-  const isSubmitting = navigation.state === 'pridedama';
+  const isSubmitting = navigation.state === "pridedama";
   return (
     <Wrapper>
       {job.image ? (
@@ -100,7 +101,7 @@ const EditJob = () => {
           >
             <FormRow
               type="text"
-              labelText={'Adresas'}
+              labelText={"Adresas"}
               defaultValue={job.adresas}
             />
           </AddressAutofill>
@@ -163,10 +164,11 @@ const EditJob = () => {
             className="btn btn-block form-btn"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'pridedama...' : 'redaguoti'}
+            {isSubmitting ? "pridedama..." : "redaguoti"}
           </button>
         </div>
       </Form>
+      <ReminderForm />
     </Wrapper>
   );
 };

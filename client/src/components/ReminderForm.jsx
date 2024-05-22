@@ -46,7 +46,7 @@ const ReminderForm = () => {
         onChange={(e) => setSendAt(e.target.value)}
         required
       />
-      <button type="submit">Set Reminder</button>
+      <button type="submit">Priminimas</button>
     </form>
   );
 };

@@ -24,20 +24,20 @@ const ReminderForm = () => {
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
+        placeholder="El.Pastas"
         required
       />
       <input
         type="text"
         value={subject}
         onChange={(e) => setSubject(e.target.value)}
-        placeholder="Subject"
+        placeholder="Tema"
         required
       />
       <textarea
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        placeholder="Message"
+        placeholder="Priminimas sau"
         required
       ></textarea>
       <input

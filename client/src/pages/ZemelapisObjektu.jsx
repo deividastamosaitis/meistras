@@ -188,6 +188,9 @@ const ZemelapisObjektu = () => {
                   _id={popupInfo._id}
                   lat={popupInfo.lat}
                   lng={popupInfo.lng}
+                  updatedAt={popupInfo.updatedAt}
+                  createdAt={popupInfo.createdAt}
+                  createdUser={popupInfo.createdUser}
                 />
               </Popup>
             </>

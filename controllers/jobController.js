@@ -1,7 +1,7 @@
-import Job from '../models/JobModel.js';
-import { StatusCodes } from 'http-status-codes';
-import cloudinary from 'cloudinary';
-import { promises as fs } from 'fs';
+import Job from "../models/JobModel.js";
+import { StatusCodes } from "http-status-codes";
+import cloudinary from "cloudinary";
+import { promises as fs } from "fs";
 
 export const getAllJobs = async (req, res) => {
   // const jobs = await Job.find({ createdBy: req.user.userId });
@@ -37,10 +37,14 @@ export const updateJob = async (req, res) => {
     await cloudinary.v2.uploader.destroy(updatedJob.imageId);
   }
 
-  res.status(StatusCodes.OK).json({ msg: 'job modified', job: updatedJob });
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: "Objektas redaguotas", job: updatedJob });
 };
 
 export const deleteJob = async (req, res) => {
   const removedJob = await Job.findByIdAndDelete(req.params.id);
-  res.status(StatusCodes.OK).json({ msg: 'job deleted', job: removedJob });
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: "Objektas ištrintas", job: removedJob });
 };

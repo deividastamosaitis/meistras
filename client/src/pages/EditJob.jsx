@@ -1,6 +1,5 @@
 import { FormRow, FormRowSelect } from "../components";
 import Wrapper from "../assets/wrappers/DashboardFormPage";
-import ReminderForm from "../components/ReminderForm";
 import { useLoaderData, useParams } from "react-router-dom";
 import { JOB_STATUS, JOB_TYPE } from "../../../utils/constants";
 import { Form, useNavigation, redirect } from "react-router-dom";
@@ -50,9 +49,7 @@ const EditJob = () => {
   const [lng, setLng] = useState();
   const [lat, setLat] = useState();
   const [fullAddress, setFullAddress] = useState();
-  console.log(lng, lat);
-  console.log(feature);
-  console.log(fullAddress);
+  const [seen, setSeen] = useState(false);
   const handleAddres = useCallback(
     (res) => {
       const feature = res.features[0];
@@ -75,6 +72,11 @@ const EditJob = () => {
 
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "pridedama";
+
+  const togglePop = () => {
+    setSeen(!seen);
+  };
+
   return (
     <Wrapper>
       {job.image ? (
@@ -106,32 +108,89 @@ const EditJob = () => {
             />
           </AddressAutofill>
 
-          <div className="lat-lng">
-            <input
-              type="text"
-              name="adresas"
-              id="adresas"
-              defaultValue={job.adresas}
-              value={fullAddress}
-              onChange={changeAddress}
-            />
-            <input
-              type="text"
-              name="lat"
-              id="lat"
-              defaultValue={job.lat}
-              value={lat}
-              onChange={changeAddress}
-            />
-            <input
-              type="text"
-              name="lng"
-              id="lng"
-              defaultValue={job.lng}
-              value={lng}
-              onChange={changeAddress}
-            />
-          </div>
+          <button
+            type="button"
+            onClick={togglePop}
+            className="btn btn-block form-btn"
+          >
+            Keisti koordinates
+          </button>
+
+          {seen ? (
+            <div className="popupa">
+              <div className="popup-innera form-row">
+                <label className="form-label">
+                  Adresas:
+                  <input
+                    className="form-input"
+                    type="text"
+                    name="adresas"
+                    id="adresas"
+                    defaultValue={job.adresas}
+                    value={fullAddress}
+                    onChange={changeAddress}
+                  />
+                </label>
+                <label>
+                  <input
+                    className="form-input"
+                    type="text"
+                    name="lat"
+                    id="lat"
+                    defaultValue={job.lat}
+                    value={lat}
+                    onChange={changeAddress}
+                  />
+                </label>
+                <label>
+                  <input
+                    className="form-input"
+                    type="text"
+                    name="lng"
+                    id="lng"
+                    defaultValue={job.lng}
+                    value={lng}
+                    onChange={changeAddress}
+                  />
+                </label>
+                <button type="submit">Keisti</button>
+                <button
+                  onClick={togglePop}
+                  type="button"
+                  className="btn edit-btn"
+                >
+                  Uždaryti
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="lat-lng">
+              <input
+                type="text"
+                name="adresas"
+                id="adresas"
+                defaultValue={job.adresas}
+                value={fullAddress}
+                onChange={changeAddress}
+              />
+              <input
+                type="text"
+                name="lat"
+                id="lat"
+                defaultValue={job.lat}
+                value={lat}
+                onChange={changeAddress}
+              />
+              <input
+                type="text"
+                name="lng"
+                id="lng"
+                defaultValue={job.lng}
+                value={lng}
+                onChange={changeAddress}
+              />
+            </div>
+          )}
 
           <FormRowSelect
             name="jobStatus"
@@ -168,7 +227,6 @@ const EditJob = () => {
           </button>
         </div>
       </Form>
-      <ReminderForm />
     </Wrapper>
   );
 };

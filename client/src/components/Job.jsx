@@ -4,13 +4,14 @@ import {
   FaCalendarAlt,
   FaInfoCircle,
   FaRegEdit,
-} from 'react-icons/fa';
-import { IoIosMail } from 'react-icons/io';
-import { Link, Form } from 'react-router-dom';
-import Wrapper from '../assets/wrappers/Job';
-import JobInfo from './JobInfo';
-import day from 'dayjs';
-import advancedFormat from 'dayjs/plugin/advancedFormat';
+} from "react-icons/fa";
+import { IoIosMail } from "react-icons/io";
+import { Link, Form } from "react-router-dom";
+import Wrapper from "../assets/wrappers/Job";
+import JobInfo from "./JobInfo";
+import day from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import { useState } from "react";
 day.extend(advancedFormat);
 
 const Job = ({
@@ -25,22 +26,27 @@ const Job = ({
   createdUser,
   updatedAt,
 }) => {
-  const date = day(createdAt).format('YYYY-MM-DD');
-  const edit = day(updatedAt).format('YYYY-MM-D H:m');
+  const date = day(createdAt).format("YYYY-MM-DD");
+  const edit = day(updatedAt).format("YYYY-MM-D H:m");
+  const [seen, setSeen] = useState(false);
+
+  const togglePop = () => {
+    setSeen(!seen);
+  };
   return (
     <Wrapper>
       <header>
         <div
           className={`main-icon ${
-            jobStatus === 'Ekspozicija'
-              ? 'ekspozicija'
-              : jobStatus === 'Baigta'
-              ? 'baigta'
-              : jobStatus === 'Montavimas-SKUBU'
-              ? 'montavimas-skubu'
-              : jobStatus === 'Pasiulyta'
-              ? 'pasiulyta'
-              : 'montavimas'
+            jobStatus === "Ekspozicija"
+              ? "ekspozicija"
+              : jobStatus === "Baigta"
+              ? "baigta"
+              : jobStatus === "Montavimas-SKUBU"
+              ? "montavimas-skubu"
+              : jobStatus === "Pasiulyta"
+              ? "pasiulyta"
+              : "montavimas"
           }`}
         >
           {jobStatus.charAt(0)}
@@ -60,7 +66,7 @@ const Job = ({
           <JobInfo icon={<FaLocationArrow />} text={adresas} />
           <JobInfo
             icon={<FaCalendarAlt />}
-            text={`Registruota: ${date} ${createdUser ? createdUser : 'Demo'}`}
+            text={`Registruota: ${date} ${createdUser ? createdUser : "Demo"}`}
           />
           <JobInfo icon={<FaInfoCircle />} text={info} />
           <JobInfo icon={<FaRegEdit />} text={`Redaguota: ${edit}`} />
@@ -74,9 +80,29 @@ const Job = ({
             Daugiau info
           </Link> */}
           <Form method="post" action={`../delete-job/${_id}`}>
-            <button type="submit" className="btn delete-btn">
+            <button
+              type="button"
+              onClick={togglePop}
+              className="btn delete-btn"
+            >
               Ištrinti
             </button>
+            {seen ? (
+              <div className="popupa">
+                <div className="popup-innera">
+                  <label>Ar tikrai norite ištrinti objektą?</label>
+                  <button type="submit" className="btn">
+                    Ištrinti
+                  </button>
+                  <button onClick={togglePop} type="button" className="btn">
+                    Uždaryti
+                  </button>
+                </div>
+              </div>
+            ) : null}
+            {/* <button type="submit" className="btn delete-btn">
+              Ištrinti
+            </button> */}
           </Form>
         </footer>
       </div>

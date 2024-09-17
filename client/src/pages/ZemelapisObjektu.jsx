@@ -29,7 +29,6 @@ const ZemelapisObjektu = () => {
 
   const handleBaigta = () => {
     setBaigta(!baigta);
-    console.log(baigta.toString());
   };
 
   const handleFilter = (e) => {
@@ -61,7 +60,7 @@ const ZemelapisObjektu = () => {
 
   return (
     <>
-      <Wrapper>
+      {/* <Wrapper>
         <div className="objektu-mygtukai">
           <button className="visi-button" value="All" onClick={handleFilter}>
             <div className="visi-button-icon"></div>
@@ -112,7 +111,7 @@ const ZemelapisObjektu = () => {
             <span>Pasiulyta</span>
           </button>
         </div>
-      </Wrapper>
+      </Wrapper> */}
       <ZemelapisObjektuContext.Provider value={{ data }}>
         <Map
           mapboxAccessToken="pk.eyJ1IjoiZnJpZGF5OTkiLCJhIjoiY2xqZWx6aHA1MHBqcjNlcjMydGR5OWdqYiJ9.PDiu8ZfBkoCT08_0z5FEYA"

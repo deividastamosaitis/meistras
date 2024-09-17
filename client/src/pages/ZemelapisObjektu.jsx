@@ -125,7 +125,10 @@ const ZemelapisObjektu = () => {
           mapStyle="mapbox://styles/mapbox/streets-v10"
         >
           {statusai.map((job) => {
-            const baigtaStyle = job.jobStatus === "Baigta" ? "80%" : "1";
+            const baigtaStyle =
+              job.jobStatus === "Baigta" || job.prislopintas === true
+                ? "65%"
+                : "1";
             if (baigta == false || job.jobStatus != "Baigta") {
               return (
                 <Marker

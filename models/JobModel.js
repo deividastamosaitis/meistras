@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import { JOB_STATUS } from '../utils/constants.js';
+import mongoose from "mongoose";
+import { JOB_STATUS } from "../utils/constants.js";
 
 const JobSchema = new mongoose.Schema(
   {
@@ -10,6 +10,10 @@ const JobSchema = new mongoose.Schema(
     lat: String,
     lng: String,
     createdUser: String,
+    prislopintas: {
+      type: Boolean,
+      default: false,
+    },
     jobStatus: {
       type: String,
       enum: Object.values(JOB_STATUS),
@@ -18,7 +22,7 @@ const JobSchema = new mongoose.Schema(
     info: String,
     createdBy: {
       type: mongoose.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
     },
     image: String,
     imageId: String,
@@ -26,4 +30,4 @@ const JobSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model('Job', JobSchema);
+export default mongoose.model("Job", JobSchema);

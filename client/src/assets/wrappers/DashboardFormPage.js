@@ -113,6 +113,9 @@ const Wrapper = styled.section`
     color: #ffffff;
     cursor: not-allowed;
   }
+  .true {
+    opacity: 30%;
+  }
   @media (min-width: 992px) {
     .form-center {
       grid-template-columns: 1fr 1fr;

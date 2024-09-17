@@ -50,6 +50,7 @@ const EditJob = () => {
   const [lat, setLat] = useState();
   const [fullAddress, setFullAddress] = useState();
   const [seen, setSeen] = useState(false);
+  const [prislopintas, setPrislopintas] = useState(job.prislopintas);
   const handleAddres = useCallback(
     (res) => {
       const feature = res.features[0];
@@ -76,6 +77,9 @@ const EditJob = () => {
   const togglePop = () => {
     setSeen(!seen);
   };
+  const togglePrislopintas = () => {
+    setPrislopintas(!prislopintas);
+  };
 
   return (
     <Wrapper>
@@ -90,6 +94,15 @@ const EditJob = () => {
           <FormRow type="text" name="vardas" defaultValue={job.vardas} />
           <FormRow type="text" name="telefonas" defaultValue={job.telefonas} />
           <FormRow type="text" name="email" defaultValue={job.email} />
+          <input
+            className="form-input lat-lng"
+            type="text"
+            name="prislopintas"
+            id="prislopintas"
+            defaultValue={job.prislopintas}
+            value={prislopintas}
+            onChange={togglePrislopintas}
+          />
           {/* <FormRow
             type="text"
             name="adresas"
@@ -218,13 +231,26 @@ const EditJob = () => {
               accept="image/*"
             />
           </div>
-          <button
-            type="submit"
-            className="btn btn-block form-btn"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "pridedama..." : "redaguoti"}
-          </button>
+          <div className="form-row">
+            <button
+              type="submit"
+              className="btn btn-block form-btn"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "pridedama..." : "redaguoti"}
+            </button>
+            <button
+              type="submit"
+              onClick={togglePrislopintas}
+              className={
+                job.prislopintas
+                  ? "btn btn-block form-btn true"
+                  : "btn btn-block form-btn false"
+              }
+            >
+              Prislopinti
+            </button>
+          </div>
         </div>
       </Form>
     </Wrapper>

@@ -5,6 +5,8 @@ import { PopupContainer } from "../components";
 import { useLoaderData, Link } from "react-router-dom";
 import Wrapper from "../assets/wrappers/ZemelapisObjektu";
 import { useContext, createContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const loader = async () => {
   try {
@@ -25,10 +27,33 @@ const ZemelapisObjektu = () => {
   const wazeURL = `https://waze.com/ul?ll=`;
   const [statusai, setStatusai] = useState(jobs);
   const [popupInfo, setPopupInfo] = useState(null);
+  const [tel, setTel] = useState();
   const [baigta, setBaigta] = useState(true);
+  const navigate = useNavigate();
 
   const handleBaigta = () => {
     setBaigta(!baigta);
+  };
+
+  //trinam +370, 0, 370
+  const filtruotiTelefonus = (numeris) => {
+    return String(numeris).replace(/^(\+370|370|0|8)/, "");
+  };
+
+  const isfiltruotiTelefonai = statusai.map((job) => ({
+    ...job,
+    telefonas: filtruotiTelefonus(job.telefonas),
+  }));
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    isfiltruotiTelefonai.map((job) => {
+      if (tel == job.telefonas) {
+        console.log(job.vardas);
+        navigate(`../edit-job/${job._id}`);
+      } else {
+      }
+    });
   };
 
   const handleFilter = (e) => {
@@ -60,6 +85,18 @@ const ZemelapisObjektu = () => {
 
   return (
     <>
+      <Wrapper className="search-box">
+        <input
+          className="input"
+          type="text"
+          value={tel}
+          placeholder="6208164"
+          onChange={(e) => setTel(e.target.value)}
+        ></input>
+        <button className=" btn" onClick={handleSearch}>
+          Ieškoti
+        </button>
+      </Wrapper>
       {/* <Wrapper>
         <div className="objektu-mygtukai">
           <button className="visi-button" value="All" onClick={handleFilter}>

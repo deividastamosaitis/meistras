@@ -13,3 +13,4 @@ export { default as Admin } from "./Admin";
 export { default as Kalendior } from "./Darbai";
 export { default as DetailJob } from "./DetailJob";
 export { default as Darbai } from "./Darbai";
+export { default as Sutartys } from "./Sutartys";

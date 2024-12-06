@@ -19,6 +19,7 @@ import authRouter from "./routes/authRouter.js";
 import userRouter from "./routes/userRouter.js";
 import darbaiRouter from "./routes/darbaiRouter.js";
 import reminders from "./routes/reminders.js";
+import sutartysRouter from "./routes/sutartysRouter.js";
 
 //public
 import { dirname } from "path";
@@ -64,6 +65,7 @@ app.use("/api/v1/users", authenticateUser, userRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/darbai", darbaiRouter);
 app.use("/api/v1/reminders", reminders);
+app.use("/api/v1/sutartys", sutartysRouter);
 
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "./public", "index.html"));

@@ -14,6 +14,7 @@ import {
   Admin,
   EditJob,
   DetailJob,
+  Sutartys,
 } from "./pages";
 
 import { action as registerAction } from "./pages/Register";
@@ -99,6 +100,10 @@ const router = createBrowserRouter([
             path: "detail-job/:id",
             element: <DetailJob />,
             loader: detailJobLoader,
+          },
+          {
+            path: "sutartys",
+            element: <Sutartys />,
           },
           { path: "delete-job/:id", action: deleteJobAction },
         ],

@@ -116,6 +116,9 @@ const Wrapper = styled.section`
   .true {
     opacity: 30%;
   }
+  .kalendorius {
+    text-align: center;
+  }
   @media (min-width: 992px) {
     .form-center {
       grid-template-columns: 1fr 1fr;

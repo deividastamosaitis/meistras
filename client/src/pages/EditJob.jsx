@@ -9,6 +9,11 @@ import { AddressAutofill } from "@mapbox/search-js-react";
 import customFetch from "../utils/customFetch";
 import { handle } from "express/lib/router";
 
+import DatePicker from "react-datepicker";
+import { format, compareAsc } from "date-fns";
+import { lt } from "date-fns/locale";
+import { AddToCalendarButton } from "add-to-calendar-button-react";
+
 export const loader = async ({ params }) => {
   try {
     const { data } = await customFetch.get(`/jobs/${params.id}`);
@@ -51,6 +56,10 @@ const EditJob = () => {
   const [fullAddress, setFullAddress] = useState();
   const [seen, setSeen] = useState(false);
   const [prislopintas, setPrislopintas] = useState(job.prislopintas);
+  const [startDate, setStartDate] = useState(new Date());
+  const [startTime, setStartTime] = useState(new Date());
+  const laikas = format(startTime, "HH:mm");
+  const data = format(startDate, "yyyy-MM-dd");
   const handleAddres = useCallback(
     (res) => {
       const feature = res.features[0];
@@ -253,14 +262,37 @@ const EditJob = () => {
           </div>
         </div>
       </Form>
-      <div title="Add to Calendar" class="addeventatc">
-        Add to Calendar
-        <span class="start">12/25/2024 08:00 AM</span>
-        <span class="end">12/25/2024 10:00 AM</span>
-        <span class="timezone">America/Los_Angeles</span>
-        <span class="title">Summary of the event</span>
-        <span class="description">Description of the event</span>
-        <span class="location">Location of the event</span>
+      <div className="kalendorius">
+        <DatePicker
+          selected={startDate}
+          onChange={(date) => setStartDate(date)}
+          dateFormat="yyyy/MM/dd"
+        />
+        <DatePicker
+          selected={startTime}
+          onChange={(date) => setStartTime(date)}
+          showTimeSelect
+          showTimeSelectOnly
+          timeIntervals={15}
+          timeCaption="Laikas"
+          dateFormat="h:mm aa"
+          locale={lt}
+        />
+
+        {console.log(laikas, data)}
+
+        <AddToCalendarButton
+          label="Pridėti kalendoriuje"
+          name={`${job.jobStatus}: ${job.vardas}`}
+          options={["Google"]}
+          startDate={data}
+          startTime={laikas}
+          endTime={laikas}
+          timeZone="Europe/Vilnius"
+          availability="busy"
+          location={job.adresas}
+          description={`telefonas: ${job.telefonas}, info: ${job.info}`}
+        ></AddToCalendarButton>
       </div>
     </Wrapper>
   );

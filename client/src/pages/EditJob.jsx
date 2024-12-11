@@ -253,6 +253,15 @@ const EditJob = () => {
           </div>
         </div>
       </Form>
+      <div title="Add to Calendar" class="addeventatc">
+        Add to Calendar
+        <span class="start">12/25/2024 08:00 AM</span>
+        <span class="end">12/25/2024 10:00 AM</span>
+        <span class="timezone">America/Los_Angeles</span>
+        <span class="title">Summary of the event</span>
+        <span class="description">Description of the event</span>
+        <span class="location">Location of the event</span>
+      </div>
     </Wrapper>
   );
 };

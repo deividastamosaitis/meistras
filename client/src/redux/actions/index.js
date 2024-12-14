@@ -2,6 +2,7 @@ import customFetch from "../../utils/customFetch";
 
 import {
   ADDNEW_DARBAS,
+  ADDNEW_SUTARTIS,
   GETALL_DARBAS,
   TOGGLE_DARBAS,
   UPDATE_DARBAS,
@@ -61,4 +62,14 @@ export const deleteDarbas = (id) => async (dispatch) => {
 
 export const toggleTab = (tab) => async (dispatch) => {
   dispatch({ type: TOGGLE_TAB, selected: tab });
+};
+
+export const addNewSutartis = (data) => async (dispatch) => {
+  try {
+    const res = await customFetch.post(`/sutartys`, { data });
+
+    dispatch({ type: ADDNEW_SUTARTIS, payload: res.data });
+  } catch (error) {
+    console.log("Error while calling addNewTodo API ", error.message);
+  }
 };

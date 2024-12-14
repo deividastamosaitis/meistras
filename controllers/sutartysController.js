@@ -10,9 +10,8 @@ export const getAllSutartys = async (req, res) => {
 };
 
 export const createSutartis = async (req, res) => {
-  req.body.createdBy = req.user.userId;
   const sutartys = await Sutartys.create(req.body);
-  res.status(StatusCodes.CREATED).json({ job });
+  res.status(StatusCodes.CREATED).json({ sutartys });
 };
 
 export const getSutartis = async (req, res) => {
@@ -30,14 +29,18 @@ export const updateSutartys = async (req, res) => {
     req.body.image = response.secure_url;
     req.body.imageId = response.imageId;
   }
-  const updateSutartys = await Job.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  });
-  if (req.file && updatedJob.imageId) {
-    await cloudinary.v2.uploader.destroy(updateSutartys.imageId);
+  const updatedSutartys = await Sutartys.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+    }
+  );
+  if (req.file && updatedSutartys.imageId) {
+    await cloudinary.v2.uploader.destroy(updatedSutartys.imageId);
   }
 
   res
     .status(StatusCodes.OK)
-    .json({ msg: "Sutartis redaguota", job: updateSutartys });
+    .json({ msg: "Objektas redaguotas", sutartys: updatedSutartys });
 };

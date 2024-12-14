@@ -15,8 +15,8 @@ const SutartysSchema = new mongoose.Schema(
     },
     info: String,
     createdBy: {
-      type: Date,
-      default: Date.now,
+      type: mongoose.Types.ObjectId,
+      ref: "User",
     },
   },
   { timestamps: true }

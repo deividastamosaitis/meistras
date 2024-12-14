@@ -8,8 +8,7 @@ import {
   updateSutartys,
 } from "../controllers/sutartysController.js";
 
-router.post("/", createSutartis);
-router.get("/", getAllSutartys);
+router.route("/").get(getAllSutartys).post(createSutartis);
 router.get("/:id", getSutartis);
 router.patch("/:id", updateSutartys);
 

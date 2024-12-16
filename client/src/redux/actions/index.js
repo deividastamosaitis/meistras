@@ -4,6 +4,7 @@ import {
   ADDNEW_DARBAS,
   ADDNEW_SUTARTIS,
   GETALL_DARBAS,
+  GETALL_SUTARTYS,
   TOGGLE_DARBAS,
   UPDATE_DARBAS,
   DELETE_DARBAS,
@@ -25,6 +26,15 @@ export const getAllDarbai = () => async (dispatch) => {
     const res = await customFetch.get(`/darbai`);
 
     dispatch({ type: GETALL_DARBAS, payload: res.data });
+  } catch (error) {
+    console.log("Error while calling getAllTodos API ", error.message);
+  }
+};
+export const getAllSutartys = () => async (dispatch) => {
+  try {
+    const res = await customFetch.get(`/sutartys`);
+
+    dispatch({ type: GETALL_SUTARTYS, payload: res.data });
   } catch (error) {
     console.log("Error while calling getAllTodos API ", error.message);
   }

@@ -14,3 +14,4 @@ export { default as Kalendior } from "./Darbai";
 export { default as DetailJob } from "./DetailJob";
 export { default as Darbai } from "./Darbai";
 export { default as Sutartys } from "./Sutartys";
+export { default as SignSutartys } from "./SignSutartys";

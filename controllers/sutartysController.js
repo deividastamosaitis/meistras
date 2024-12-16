@@ -15,8 +15,8 @@ export const createSutartis = async (req, res) => {
 };
 
 export const getSutartis = async (req, res) => {
-  const sutartys = await Sutartys.findById(req.params.id);
-  res.status(StatusCodes.OK).json({ sutartys });
+  const sutartis = await Sutartys.findById(req.params.id);
+  res.status(StatusCodes.OK).json({ sutartis });
 };
 
 export const updateSutartys = async (req, res) => {

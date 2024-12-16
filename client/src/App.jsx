@@ -15,6 +15,7 @@ import {
   EditJob,
   DetailJob,
   Sutartys,
+  SignSutartys,
 } from "./pages";
 
 import { action as registerAction } from "./pages/Register";
@@ -26,6 +27,7 @@ import { action as deleteJobAction } from "./pages/DeleteJob";
 import { loader as dashboardLoader } from "./pages/DashboardLayout";
 import { loader as allJobsLoader } from "./pages/AllJobs";
 import { loader as editJobLoader } from "./pages/EditJob";
+import { loader as editSignSutartisLoader } from "./pages/SignSutartys";
 import { loader as detailJobLoader } from "./pages/EditJob";
 import { loader as allObjektuZemelapis } from "./pages/ZemelapisObjektu";
 import { loader as allDarbaiLoader } from "./pages/Darbai";
@@ -57,6 +59,11 @@ const router = createBrowserRouter([
         path: "login",
         element: <Login />,
         action: loginAction,
+      },
+      {
+        path: "sutartis/:id",
+        element: <SignSutartys />,
+        loader: editSignSutartisLoader,
       },
       {
         path: "dashboard",

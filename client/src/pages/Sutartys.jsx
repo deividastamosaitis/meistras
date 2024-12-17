@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Wrapper from "../assets/wrappers/SutartisForm";
-import { Form, useNavigation, redirect } from "react-router-dom";
+import { Form, useNavigation, redirect, Link } from "react-router-dom";
 import { FormRow, FormRowSelect } from "../components";
 import { toast } from "react-toastify";
 import customFetch from "../utils/customFetch";
+import { useLoaderData } from "react-router-dom";
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
@@ -19,7 +20,20 @@ export const action = async ({ request }) => {
   }
 };
 
+export const loader = async () => {
+  try {
+    const { data } = await customFetch.get("/sutartys");
+
+    return { data };
+  } catch (error) {
+    toast.error(error?.response?.data?.msg);
+    return error;
+  }
+};
+
 const Sutartys = () => {
+  const { data } = useLoaderData();
+  const { sutartys } = data;
   const [seen, setSeen] = useState(false);
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "pridedama";
@@ -68,7 +82,32 @@ const Sutartys = () => {
           </button>
         </Form>
       ) : (
-        <>nera</>
+        <>
+          <table>
+            <tr>
+              <th>Pavadinimas</th>
+              <th>Adresas</th>
+              <th>Pasirašyta</th>
+              <th>URL</th>
+            </tr>
+            {sutartys.map((sutartis) => (
+              <tr>
+                <td>{sutartis.pavadinimas}</td>
+                <td>{sutartis.adresas}</td>
+                <td>{sutartis.pasirasytas ? "Pasirašyta" : "Nepasirašyta"}</td>
+                <td>
+                  <Link
+                    target="_blank"
+                    to={`/../sutartis/${sutartis._id}`}
+                    className="btn edit-btn"
+                  >
+                    URL
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </table>
+        </>
       )}
     </Wrapper>
   );

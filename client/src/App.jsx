@@ -31,6 +31,7 @@ import { loader as editSignSutartisLoader } from "./pages/SignSutartys";
 import { loader as detailJobLoader } from "./pages/EditJob";
 import { loader as allObjektuZemelapis } from "./pages/ZemelapisObjektu";
 import { loader as allDarbaiLoader } from "./pages/Darbai";
+import { loader as allSutartysLoader } from "./pages/Sutartys";
 
 export const checkDefaultTheme = () => {
   const isDarkTheme = localStorage.getItem("darkTheme") === "true";
@@ -113,6 +114,7 @@ const router = createBrowserRouter([
             path: "sutartys",
             element: <Sutartys />,
             action: addSutartysAction,
+            loader: allSutartysLoader,
           },
           { path: "delete-job/:id", action: deleteJobAction },
         ],

@@ -119,6 +119,21 @@ const Wrapper = styled.section`
   .kalendorius {
     text-align: center;
   }
+  table,
+  td,
+  th {
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px;
+  }
+  th,
+  td {
+    padding: 15px;
+  }
   @media (min-width: 992px) {
     .form-center {
       grid-template-columns: 1fr 1fr;

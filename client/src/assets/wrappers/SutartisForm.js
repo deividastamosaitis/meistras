@@ -134,6 +134,9 @@ const Wrapper = styled.section`
   td {
     padding: 15px;
   }
+  .sutarties-forma {
+    margin-top: 15px;
+  }
   @media (min-width: 992px) {
     .form-center {
       grid-template-columns: 1fr 1fr;

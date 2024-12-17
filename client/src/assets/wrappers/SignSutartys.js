@@ -7,7 +7,7 @@ const Wrapper = styled.aside`
   }
   * {
     width: 100%;
-    height: 100vh;
+    height: 80vh;
   }
 `;
 export default Wrapper;

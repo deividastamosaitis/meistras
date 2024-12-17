@@ -6,14 +6,14 @@ const SutartysSchema = new mongoose.Schema(
     VAT: Number,
     asmuo: String,
     adresas: String,
-    patikslinimas: String,
+    telefonas: String,
+    email: String,
     sutarimai: String,
     parasas: String,
     pasirasytas: {
       type: Boolean,
       default: false,
     },
-    info: String,
     createdBy: {
       type: mongoose.Types.ObjectId,
       ref: "User",

@@ -5,6 +5,7 @@ import { FormRow, FormRowSelect } from "../components";
 import { toast } from "react-toastify";
 import customFetch from "../utils/customFetch";
 import { useLoaderData } from "react-router-dom";
+import day from "dayjs";
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
@@ -49,14 +50,25 @@ const Sutartys = () => {
       </button>
       {seen ? (
         <Form method="post" className="form">
-          <div className="form-center">
+          <div className="form-center sutarties-forma">
             <FormRow
               type="text"
               name="pavadinimas"
+              labelText={"Įmonės/Ūkio pavadinimas"}
               defaultValue={"UAB Todesa"}
             />
-            <FormRow type="text" name="VAT" defaultValue={123123123} />
-            <FormRow type="text" name="asmuo" defaultValue={"Antanas Parts"} />
+            <FormRow
+              type="text"
+              name="VAT"
+              labelText={"Įmonės kodas"}
+              defaultValue={123123123}
+            />
+            <FormRow
+              type="text"
+              name="asmuo"
+              labelText={"Atsakingas asmuo"}
+              defaultValue={"Antanas Parts"}
+            />
             <FormRow
               type="text"
               name="adresas"
@@ -64,13 +76,19 @@ const Sutartys = () => {
             />
             <FormRow
               type="text"
-              name="patikslinimas"
-              defaultValue={"Suma už valanda"}
+              name="telefonas"
+              defaultValue={"+37069927245"}
+            />
+            <FormRow
+              type="text"
+              name="email"
+              labelText={"El. paštas"}
+              defaultValue={"prekyba@gpsmeistras.lt"}
             />
             <FormRow
               type="text"
               name="sutarimai"
-              defaultValue={"Kiti sutarimai"}
+              defaultValue={"Kiti sutarimai (jeigu reikia)"}
             />
           </div>
           <button
@@ -85,15 +103,23 @@ const Sutartys = () => {
         <>
           <table>
             <tr>
+              <th>Data</th>
               <th>Pavadinimas</th>
+              <th>Įmonės kodas</th>
               <th>Adresas</th>
+              <th>Telefonas</th>
+              <th>El. paštas</th>
               <th>Pasirašyta</th>
               <th>URL</th>
             </tr>
             {sutartys.map((sutartis) => (
               <tr>
+                <td>{day(sutartis.createdAt).format("YYYY-MM-DD")}</td>
                 <td>{sutartis.pavadinimas}</td>
+                <td>{sutartis.VAT}</td>
                 <td>{sutartis.adresas}</td>
+                <td>{sutartis.telefonas}</td>
+                <td>{sutartis.email}</td>
                 <td>{sutartis.pasirasytas ? "Pasirašyta" : "Nepasirašyta"}</td>
                 <td>
                   <Link

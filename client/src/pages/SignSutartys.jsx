@@ -454,6 +454,7 @@ const Quixote = (props) => (
 
 const SignSutartys = () => {
   const { sutartis } = useLoaderData();
+  const [pdfBlob, setPdfBlob] = useState(null);
   const date = day(sutartis.createdAt).format("YYYY-MM-DD");
   const sutartiesnr = day(sutartis.createdAt).format("YYYYMMDD");
   //PARASAS START---------------------------
@@ -470,19 +471,8 @@ const SignSutartys = () => {
     setSignaturePad(tempSignaturePad);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setSavedSignature(signaturePad.toDataURL());
-  };
-  const handleClear = () => {
-    signaturePad.clear();
-  };
-
-  useEffect(() => {
-    readyPad();
-  }, []);
-
-  const [pdfBlob, setPdfBlob] = useState(null);
-  const generatePDF = async () => {
     const blob = await pdf(
       <Quixote
         sutartiesnr={sutartiesnr}
@@ -498,19 +488,46 @@ const SignSutartys = () => {
       />
     ).toBlob();
     setPdfBlob(blob);
+    console.log(savedSignature);
   };
+  const handleClear = () => {
+    signaturePad.clear();
+  };
+
+  useEffect(() => {
+    readyPad();
+  }, []);
+
+  // const generatePDF = async () => {
+  //   const blob = await pdf(
+  //     <Quixote
+  //       sutartiesnr={sutartiesnr}
+  //       pavadinimas={sutartis.pavadinimas}
+  //       data={date}
+  //       VAT={sutartis.VAT}
+  //       asmuo={sutartis.asmuo}
+  //       adresas={sutartis.adresas}
+  //       patikslinimas={sutartis.patikslinimas}
+  //       sutarimai={sutartis.sutarimai}
+  //       telefonas={sutartis.telefonas}
+  //       parasas={savedSignature}
+  //     />
+  //   ).toBlob();
+  //   setPdfBlob(blob);
+  // };
 
   //PARASAS END------------------------------
 
   return (
     <>
       <div>
-        <button onClick={generatePDF}>Generuoti PDF</button>
+        <button onClick={handleSave}>Generuoti PDF</button>
         {pdfBlob && (
           <>
             <iframe
+              key={pdfBlob}
               src={URL.createObjectURL(pdfBlob)}
-              style={{ width: "100%", height: "100vh", border: "none" }}
+              style={{ width: "100%", height: "70vh", border: "none" }}
               title="PDF Viewer"
             />
             <a
@@ -519,7 +536,7 @@ const SignSutartys = () => {
               rel="noopener noreferrer"
               style={{ display: "block", marginTop: "10px" }}
             >
-              Open PDF in New Tab
+              <button>Atidaryti Sutartį</button>
             </a>
             <button
               onClick={() => {
@@ -529,7 +546,7 @@ const SignSutartys = () => {
                 link.click();
               }}
             >
-              Download PDF
+              Atsisiųsti sutartį
             </button>
           </>
         )}

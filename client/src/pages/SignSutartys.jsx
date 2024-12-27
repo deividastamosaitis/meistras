@@ -472,7 +472,8 @@ const SignSutartys = () => {
   };
 
   const handleSave = async () => {
-    setSavedSignature(signaturePad.toDataURL());
+    const signatureDataURL = signaturePad.toDataURL();
+    setSavedSignature(signatureDataURL);
     const blob = await pdf(
       <Quixote
         sutartiesnr={sutartiesnr}
@@ -484,7 +485,7 @@ const SignSutartys = () => {
         patikslinimas={sutartis.patikslinimas}
         sutarimai={sutartis.sutarimai}
         telefonas={sutartis.telefonas}
-        parasas={savedSignature}
+        parasas={signatureDataURL}
       />
     ).toBlob();
     setPdfBlob(blob);

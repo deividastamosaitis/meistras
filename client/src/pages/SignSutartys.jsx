@@ -12,6 +12,7 @@ import {
   Font,
   View,
   Image,
+  pdf,
 } from "@react-pdf/renderer";
 import { PDFViewer } from "@react-pdf/renderer";
 import day from "dayjs";
@@ -479,12 +480,42 @@ const SignSutartys = () => {
   useEffect(() => {
     readyPad();
   }, []);
+
+  const [pdfBlob, setPdfBlob] = useState(null);
+  const generatePDF = async () => {
+    const blob = await pdf(
+      <Quixote
+        sutartiesnr={sutartiesnr}
+        pavadinimas={sutartis.pavadinimas}
+        data={date}
+        VAT={sutartis.VAT}
+        asmuo={sutartis.asmuo}
+        adresas={sutartis.adresas}
+        patikslinimas={sutartis.patikslinimas}
+        sutarimai={sutartis.sutarimai}
+        telefonas={sutartis.telefonas}
+        parasas={savedSignature}
+      />
+    ).toBlob();
+    setPdfBlob(blob);
+  };
+
   //PARASAS END------------------------------
 
   return (
     <>
+      <div>
+        <button onClick={generatePDF}>Generuoti PDF</button>
+        {pdfBlob && (
+          <iframe
+            src={URL.createObjectURL(pdfBlob)}
+            style={{ width: "100%", height: "100vh", border: "none" }}
+            title="PDF Viewer"
+          />
+        )}
+      </div>
       <Wrapper>
-        <PDFViewer>
+        {/* <PDFViewer>
           <Quixote
             sutartiesnr={sutartiesnr}
             pavadinimas={sutartis.pavadinimas}
@@ -497,7 +528,7 @@ const SignSutartys = () => {
             telefonas={sutartis.telefonas}
             parasas={savedSignature}
           />
-        </PDFViewer>
+        </PDFViewer> */}
       </Wrapper>
       <div className="signature-label">
         <label>Parašas:</label>

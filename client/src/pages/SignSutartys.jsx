@@ -507,11 +507,31 @@ const SignSutartys = () => {
       <div>
         <button onClick={generatePDF}>Generuoti PDF</button>
         {pdfBlob && (
-          <iframe
-            src={URL.createObjectURL(pdfBlob)}
-            style={{ width: "100%", height: "100vh", border: "none" }}
-            title="PDF Viewer"
-          />
+          <>
+            <iframe
+              src={URL.createObjectURL(pdfBlob)}
+              style={{ width: "100%", height: "100vh", border: "none" }}
+              title="PDF Viewer"
+            />
+            <a
+              href={URL.createObjectURL(pdfBlob)}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: "block", marginTop: "10px" }}
+            >
+              Open PDF in New Tab
+            </a>
+            <button
+              onClick={() => {
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(pdfBlob);
+                link.download = "document.pdf";
+                link.click();
+              }}
+            >
+              Download PDF
+            </button>
+          </>
         )}
       </div>
       <Wrapper>

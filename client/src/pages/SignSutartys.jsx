@@ -1,8 +1,9 @@
 import React from "react";
 import { useLoaderData, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import Wrapper from "../assets/wrappers/SignSutartys";
+import Wrapper from "../assets/wrappers/Sutartis";
 import customFetch from "../utils/customFetch";
+import { SutartisForm } from "../components";
 import { redirect } from "react-router-dom";
 import {
   Document,
@@ -499,62 +500,51 @@ const SignSutartys = () => {
     readyPad();
   }, []);
 
-  // const generatePDF = async () => {
-  //   const blob = await pdf(
-  //     <Quixote
-  //       sutartiesnr={sutartiesnr}
-  //       pavadinimas={sutartis.pavadinimas}
-  //       data={date}
-  //       VAT={sutartis.VAT}
-  //       asmuo={sutartis.asmuo}
-  //       adresas={sutartis.adresas}
-  //       patikslinimas={sutartis.patikslinimas}
-  //       sutarimai={sutartis.sutarimai}
-  //       telefonas={sutartis.telefonas}
-  //       parasas={savedSignature}
-  //     />
-  //   ).toBlob();
-  //   setPdfBlob(blob);
-  // };
-
   //PARASAS END------------------------------
 
   return (
     <>
-      <div>
-        <button onClick={handleSave}>Generuoti PDF</button>
-        {pdfBlob && (
-          <>
-            <iframe
-              key={pdfBlob}
-              src={URL.createObjectURL(pdfBlob)}
-              style={{ width: "100%", height: "70vh", border: "none" }}
-              title="PDF Viewer"
-            />
-            <a
-              href={URL.createObjectURL(pdfBlob)}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ display: "block", marginTop: "10px" }}
-            >
-              <button>Atidaryti Sutartį</button>
-            </a>
-            <button
-              onClick={() => {
-                const link = document.createElement("a");
-                link.href = URL.createObjectURL(pdfBlob);
-                link.download = "document.pdf";
-                link.click();
-              }}
-            >
-              Atsisiųsti sutartį
-            </button>
-          </>
-        )}
-      </div>
       <Wrapper>
-        {/* <PDFViewer>
-          <Quixote
+        <div className="sutartis-container">
+          <div className="sutartis-signature-box">
+            {pdfBlob && (
+              <>
+                <a
+                  href={URL.createObjectURL(pdfBlob)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: "block", marginTop: "10px" }}
+                >
+                  <button>Atidaryti Sutartį</button>
+                </a>
+                <button
+                  onClick={() => {
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(pdfBlob);
+                    link.download = `${sutartis.pavadinimas}.pdf`;
+                    link.click();
+                  }}
+                >
+                  Atsisiųsti sutartį
+                </button>
+              </>
+            )}
+            <div className="signature-label">
+              <label>Parašas:</label>
+            </div>
+            <div id="signature-pad">
+              <canvas className="signature-canvas"></canvas>
+              <div>
+                <button onClick={handleSave}>
+                  <FaSave /> Pasirašyti
+                </button>
+                <button onClick={handleClear}>
+                  <FaEraser /> Pataisyti
+                </button>
+              </div>
+            </div>
+          </div>
+          <SutartisForm
             sutartiesnr={sutartiesnr}
             pavadinimas={sutartis.pavadinimas}
             data={date}
@@ -566,31 +556,8 @@ const SignSutartys = () => {
             telefonas={sutartis.telefonas}
             parasas={savedSignature}
           />
-        </PDFViewer> */}
-      </Wrapper>
-      <div className="signature-label">
-        <label>Parašas:</label>
-      </div>
-      <div id="signature-pad">
-        <canvas className="signature-canvas"></canvas>
-        <div>
-          <button onClick={handleSave}>
-            <FaSave /> Pasirašyti
-          </button>
-          <button onClick={handleClear}>
-            <FaEraser /> Pataisyti
-          </button>
         </div>
-      </div>
-      {/* <div className="saved-signature">
-        {savedSignature && (
-          <img
-            className="signature-image"
-            alt="saved-signature"
-            src={savedSignature}
-          />
-        )}
-      </div> */}
+      </Wrapper>
     </>
   );
 };

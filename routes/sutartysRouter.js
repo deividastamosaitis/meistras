@@ -1,15 +1,16 @@
 import { Router } from "express";
+import upload from "../middleware/multerMiddleware.js";
 const router = Router();
 
 import {
   getAllSutartys,
   createSutartis,
   getSutartis,
-  updateSutartys,
+  uploadPDF,
 } from "../controllers/sutartysController.js";
 
 router.route("/").get(getAllSutartys).post(createSutartis);
 router.get("/:id", getSutartis);
-router.patch("/:id", updateSutartys);
+router.post("/upload", upload.single("file"), uploadPDF);
 
 export default router;

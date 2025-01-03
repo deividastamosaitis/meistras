@@ -5,6 +5,7 @@ import Wrapper from "../assets/wrappers/Sutartis";
 import customFetch from "../utils/customFetch";
 import { SutartisForm } from "../components";
 import { redirect } from "react-router-dom";
+import axios from "axios";
 import {
   Document,
   Page,
@@ -475,22 +476,36 @@ const SignSutartys = () => {
   const handleSave = async () => {
     const signatureDataURL = signaturePad.toDataURL();
     setSavedSignature(signatureDataURL);
-    const blob = await pdf(
-      <Quixote
-        sutartiesnr={sutartiesnr}
-        pavadinimas={sutartis.pavadinimas}
-        data={date}
-        VAT={sutartis.VAT}
-        asmuo={sutartis.asmuo}
-        adresas={sutartis.adresas}
-        patikslinimas={sutartis.patikslinimas}
-        sutarimai={sutartis.sutarimai}
-        telefonas={sutartis.telefonas}
-        parasas={signatureDataURL}
-      />
-    ).toBlob();
-    setPdfBlob(blob);
-    console.log(savedSignature);
+    try {
+      const blob = await pdf(
+        <Quixote
+          sutartiesnr={sutartiesnr}
+          pavadinimas={sutartis.pavadinimas}
+          data={date}
+          VAT={sutartis.VAT}
+          asmuo={sutartis.asmuo}
+          adresas={sutartis.adresas}
+          patikslinimas={sutartis.patikslinimas}
+          sutarimai={sutartis.sutarimai}
+          telefonas={sutartis.telefonas}
+          parasas={signatureDataURL}
+        />
+      ).toBlob();
+      setPdfBlob(blob);
+      const formData = new FormData();
+      formData.append("file", blob, `${sutartis.pavadinimas}.pdf`);
+      formData.append("id", sutartis._id);
+      const response = await axios.post("/api/v1/sutartys/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (response.status === 200) {
+        toast.success("Sutartis pasirašyta!");
+      }
+    } catch (error) {
+      console.error("Error uploading PDF:", error);
+    }
   };
   const handleClear = () => {
     signaturePad.clear();

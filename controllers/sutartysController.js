@@ -19,28 +19,48 @@ export const getSutartis = async (req, res) => {
   res.status(StatusCodes.OK).json({ sutartis });
 };
 
-export const updateSutartys = async (req, res) => {
-  const newSutartis = { ...req.body };
-  console.log(req.file);
+export const uploadPDF = async (req, res) => {
+  try {
+    const { id } = req.body; // Get Sutartis ID from the request
+    const file = req.file; // File uploaded by multer
 
-  if (req.file) {
-    const response = await cloudinary.v2.uploader.upload(req.file.path);
-    await fs.unlink(req.file.path);
-    req.body.image = response.secure_url;
-    req.body.imageId = response.imageId;
-  }
-  const updatedSutartys = await Sutartys.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    {
-      new: true,
+    if (!id) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Sutartis ID is required" });
     }
-  );
-  if (req.file && updatedSutartys.imageId) {
-    await cloudinary.v2.uploader.destroy(updatedSutartys.imageId);
-  }
 
-  res
-    .status(StatusCodes.OK)
-    .json({ msg: "Objektas redaguotas", sutartys: updatedSutartys });
+    if (!file) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "No file uploaded" });
+    }
+
+    // Update the Sutartis with the file details
+    const sutartis = await Sutartys.findByIdAndUpdate(
+      id,
+      {
+        pdf: {
+          filename: file.filename,
+          filepath: `/uploads/${file.filename}`,
+        },
+      },
+      { new: true }
+    );
+
+    if (!sutartis) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "Sutartis not found" });
+    }
+
+    res
+      .status(StatusCodes.OK)
+      .json({ message: "File uploaded successfully", sutartis });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: "Server error" });
+  }
 };

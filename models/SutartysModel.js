@@ -14,6 +14,10 @@ const SutartysSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    pdf: {
+      filename: { type: String, required: false },
+      filepath: { type: String, required: false },
+    },
     createdBy: {
       type: mongoose.Types.ObjectId,
       ref: "User",

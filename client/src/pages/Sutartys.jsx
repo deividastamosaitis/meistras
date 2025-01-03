@@ -55,41 +55,13 @@ const Sutartys = () => {
               type="text"
               name="pavadinimas"
               labelText={"Įmonės/Ūkio pavadinimas"}
-              defaultValue={"UAB Todesa"}
             />
-            <FormRow
-              type="text"
-              name="VAT"
-              labelText={"Įmonės kodas"}
-              defaultValue={123123123}
-            />
-            <FormRow
-              type="text"
-              name="asmuo"
-              labelText={"Atsakingas asmuo"}
-              defaultValue={"Antanas Parts"}
-            />
-            <FormRow
-              type="text"
-              name="adresas"
-              defaultValue={"Jonavos g. 204A, Kaunas"}
-            />
-            <FormRow
-              type="text"
-              name="telefonas"
-              defaultValue={"+37069927245"}
-            />
-            <FormRow
-              type="text"
-              name="email"
-              labelText={"El. paštas"}
-              defaultValue={"prekyba@gpsmeistras.lt"}
-            />
-            <FormRow
-              type="text"
-              name="sutarimai"
-              defaultValue={"Kiti sutarimai (jeigu reikia)"}
-            />
+            <FormRow type="text" name="VAT" labelText={"Įmonės kodas"} />
+            <FormRow type="text" name="asmuo" labelText={"Atsakingas asmuo"} />
+            <FormRow type="text" name="adresas" />
+            <FormRow type="text" name="telefonas" />
+            <FormRow type="text" name="email" labelText={"El. paštas"} />
+            <FormRow type="text" name="sutarimai" />
           </div>
           <button
             type="submit"
@@ -120,15 +92,31 @@ const Sutartys = () => {
                 <td>{sutartis.adresas}</td>
                 <td>{sutartis.telefonas}</td>
                 <td>{sutartis.email}</td>
-                <td>{sutartis.pasirasytas ? "Pasirašyta" : "Nepasirašyta"}</td>
                 <td>
-                  <Link
-                    target="_blank"
-                    to={`/../sutartis/${sutartis._id}`}
-                    className="btn edit-btn"
-                  >
-                    URL
-                  </Link>
+                  {sutartis.pdf ? (
+                    <span className="pasirasyta">Pasirašyta</span>
+                  ) : (
+                    <span className="nepasirasyta">Laukiama</span>
+                  )}
+                </td>
+                <td>
+                  {sutartis.pdf ? (
+                    <Link
+                      target="_blank"
+                      to={`../${sutartis.pdf.filepath}`}
+                      className="btn edit-btn"
+                    >
+                      Peržiūrėti sutartį
+                    </Link>
+                  ) : (
+                    <Link
+                      target="_blank"
+                      to={`/../sutartis/${sutartis._id}`}
+                      className="btn edit-btn"
+                    >
+                      URL
+                    </Link>
+                  )}
                 </td>
               </tr>
             ))}

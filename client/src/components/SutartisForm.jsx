@@ -127,8 +127,8 @@ const SutartisForm = (props) => {
               </p>
               <p className="ikainiai">
                 <span className="input">Viršvalandžiai</span>: taikomas +50% , o
-                darbų atlikimas šventinėmis ir ne darbo dienomis +100% koefi
-                cientas išskyrus atvejus, jei su užsakovu sutaryta kitaip
+                darbų atlikimas šventinėmis ir ne darbo dienomis +100%
+                koeficientas išskyrus atvejus, jei su užsakovu sutaryta kitaip
                 (tekstinis pagrindas).
               </p>
             </p>

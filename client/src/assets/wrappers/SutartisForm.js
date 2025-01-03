@@ -5,6 +5,14 @@ const Wrapper = styled.section`
   width: 100%;
   background: var(--background-secondary-color);
   padding: 3rem 2rem 4rem;
+  .pasirasyta {
+    color: green;
+    font-weight: bold;
+  }
+  .nepasirasyta {
+    color: red;
+    font-weight: bold;
+  }
   .form-title {
     margin-bottom: 2rem;
   }

@@ -1,35 +1,34 @@
-import { FormRow, FormRowSelect } from "../components";
-import Wrapper from "../assets/wrappers/DashboardFormPage";
-import { useLoaderData, useParams } from "react-router-dom";
-import { JOB_STATUS, JOB_TYPE } from "../../../utils/constants";
-import { Form, useNavigation, redirect } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useState, useCallback } from "react";
+import { FormRow, FormRowSelect } from "../components";
+import Wrapper from "../assets/wrappers/EditJobForm";
+import { useLoaderData, useNavigation, redirect, Form } from "react-router-dom";
+import { JOB_STATUS } from "../../../utils/constants";
 import { AddressAutofill } from "@mapbox/search-js-react";
-import customFetch from "../utils/customFetch";
-import { handle } from "express/lib/router";
-
+import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
-import { format, compareAsc } from "date-fns";
+import { format } from "date-fns";
 import { lt } from "date-fns/locale";
 import { AddToCalendarButton } from "add-to-calendar-button-react";
+import customFetch from "../utils/customFetch";
 
 export const loader = async ({ params }) => {
   try {
-    const { data } = await customFetch.get(`/jobs/${params.id}`);
-    return data;
+    const [jobRes, sutartysRes] = await Promise.all([
+      customFetch.get(`/jobs/${params.id}`),
+      customFetch.get(`/sutartys`),
+    ]);
+    return {
+      job: jobRes.data.job,
+      sutartys: sutartysRes.data.sutartys,
+    };
   } catch (error) {
     toast.error(error?.response?.data?.msg);
     return redirect("/dashboard/all-jobs");
   }
 };
+
 export const action = async ({ request, params }) => {
   const formData = await request.formData();
-  const file = formData.get("image");
-  if (file && file.size > 500000) {
-    toast.error("Nuotrauka per didele");
-    return null;
-  }
   try {
     await customFetch.patch(`/jobs/${params.id}`, formData);
     toast.success("Objektas redaguotas");
@@ -37,87 +36,122 @@ export const action = async ({ request, params }) => {
     toast.error(error?.response?.data?.msg);
   }
   return null;
-  // const data = Object.fromEntries(formData);
-  // try {
-  //   await customFetch.patch(`/jobs/${params.id}`, data);
-  //   toast.success('Objektas redaguotas');
-  //   return redirect('/dashboard/all-jobs');
-  // } catch (error) {
-  //   toast.error(error?.response?.data?.msg);
-  //   return error;
-  // }
 };
 
 const EditJob = () => {
-  const { job } = useLoaderData();
+  const { job, sutartys } = useLoaderData();
   const [feature, setFeature] = useState({});
-  const [lng, setLng] = useState();
-  const [lat, setLat] = useState();
-  const [fullAddress, setFullAddress] = useState();
-  const [seen, setSeen] = useState(false);
-  const [prislopintas, setPrislopintas] = useState(job.prislopintas);
+  const [lng, setLng] = useState(job.lng);
+  const [lat, setLat] = useState(job.lat);
+  const [fullAddress, setFullAddress] = useState(job.adresas);
   const [startDate, setStartDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [localImages, setLocalImages] = useState(job.images || []);
   const laikas = format(startTime, "HH:mm");
   const data = format(startDate, "yyyy-MM-dd");
-  const handleAddres = useCallback(
-    (res) => {
-      const feature = res.features[0];
-      setFeature(feature);
-      setLng(feature.geometry.coordinates[0]);
-      setLat(feature.geometry.coordinates[1]);
-      setFullAddress(feature.properties.full_address);
-    },
-    [setFeature],
-    [setLng],
-    [setLat],
-    [setFullAddress]
-  );
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
 
-  const changeAddress = () => {
-    setFullAddress(feature.properties.full_address);
+  const handleImageDelete = (url) => {
+    const filtered = localImages.filter((img) => img !== url);
+    setLocalImages(filtered);
+  };
+
+  const handleAddres = useCallback((res) => {
+    const feature = res.features[0];
+    setFeature(feature);
     setLng(feature.geometry.coordinates[0]);
     setLat(feature.geometry.coordinates[1]);
-  };
+    setFullAddress(feature.properties.full_address);
+  }, []);
 
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "pridedama";
+  const cleanTel = String(job.telefonas).replace(/^\+?370|^0|^8/, "");
+  const sutartis = sutartys.find((s) => {
+    const sTel = String(s.telefonas).replace(/^\+?370|^0|^8/, "");
+    return sTel === cleanTel;
+  });
 
-  const togglePop = () => {
-    setSeen(!seen);
-  };
-  const togglePrislopintas = () => {
-    setPrislopintas(!prislopintas);
-  };
+  let sutartiesBusena = "Sutartis nesukurta";
+  if (sutartis)
+    sutartiesBusena = sutartis.pdf ? "Pasirašyta" : "Laukiama pasirašymo";
 
   return (
     <Wrapper>
-      {job.image ? (
-        <img src={job.image} alt="nuotrauka" className="img" />
-      ) : (
-        <></>
+      <div className="image-gallery">
+        {localImages.length > 0 ? (
+          localImages.map((src, i) => (
+            <div key={i} className="image-wrapper">
+              <img
+                src={src}
+                alt={`img-${i}`}
+                className="img"
+                onClick={() => setSelectedImage(src)}
+              />
+              <button
+                type="button"
+                className="delete-img-btn"
+                onClick={() => handleImageDelete(src)}
+              >
+                ✕
+              </button>
+            </div>
+          ))
+        ) : job.image ? (
+          <div className="image-wrapper">
+            <img
+              src={job.image}
+              alt="viena nuotrauka"
+              className="img"
+              onClick={() => setSelectedImage(job.image)}
+            />
+            <button
+              type="button"
+              className="delete-img-btn"
+              onClick={() => handleImageDelete(job.image)}
+            >
+              ✕
+            </button>
+          </div>
+        ) : (
+          <p style={{ color: "#888" }}>Nuotraukos nepridėtos</p>
+        )}
+      </div>
+
+      {selectedImage && (
+        <div className="image-modal" onClick={() => setSelectedImage(null)}>
+          <img src={selectedImage} className="image-full" alt="padidinta" />
+        </div>
       )}
-      <Form method="post" className="form" encType="multipart/form-data">
+
+      <Form method="post" encType="multipart/form-data">
         <h4 className="form-title">Redaguoti objektą</h4>
+
+        <div className="sutarties-info">
+          <strong>Sutartis:</strong>{" "}
+          <span
+            className={`sutartis-${sutartiesBusena
+              .toLowerCase()
+              .replaceAll(" ", "-")}`}
+          >
+            {sutartiesBusena}
+          </span>
+          {sutartis?.pdf && (
+            <a
+              href={`/${sutartis.pdf.filepath}`}
+              className="sutartis-perziura"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Peržiūrėti
+            </a>
+          )}
+        </div>
+
         <div className="form-center">
           <FormRow type="text" name="vardas" defaultValue={job.vardas} />
           <FormRow type="text" name="telefonas" defaultValue={job.telefonas} />
           <FormRow type="text" name="email" defaultValue={job.email} />
-          <input
-            className="form-input lat-lng"
-            type="text"
-            name="prislopintas"
-            id="prislopintas"
-            defaultValue={job.prislopintas}
-            value={prislopintas}
-            onChange={togglePrislopintas}
-          />
-          {/* <FormRow
-            type="text"
-            name="adresas"
-            labelText="Adresas"
-            defaultValue={job.adresas}
-          /> */}
 
           <AddressAutofill
             accessToken="pk.eyJ1IjoiZnJpZGF5OTkiLCJhIjoiY2xqZWx6aHA1MHBqcjNlcjMydGR5OWdqYiJ9.PDiu8ZfBkoCT08_0z5FEYA"
@@ -125,94 +159,14 @@ const EditJob = () => {
           >
             <FormRow
               type="text"
-              labelText={"Adresas"}
+              labelText="Adresas"
               defaultValue={job.adresas}
             />
           </AddressAutofill>
 
-          <button
-            type="button"
-            onClick={togglePop}
-            className="btn btn-block form-btn"
-          >
-            Keisti koordinates
-          </button>
-
-          {seen ? (
-            <div className="popupa">
-              <div className="popup-innera form-row">
-                <label className="form-label">
-                  Adresas:
-                  <input
-                    className="form-input"
-                    type="text"
-                    name="adresas"
-                    id="adresas"
-                    defaultValue={job.adresas}
-                    value={fullAddress}
-                    onChange={changeAddress}
-                  />
-                </label>
-                <label>
-                  <input
-                    className="form-input"
-                    type="text"
-                    name="lat"
-                    id="lat"
-                    defaultValue={job.lat}
-                    value={lat}
-                    onChange={changeAddress}
-                  />
-                </label>
-                <label>
-                  <input
-                    className="form-input"
-                    type="text"
-                    name="lng"
-                    id="lng"
-                    defaultValue={job.lng}
-                    value={lng}
-                    onChange={changeAddress}
-                  />
-                </label>
-                <button type="submit">Keisti</button>
-                <button
-                  onClick={togglePop}
-                  type="button"
-                  className="btn edit-btn"
-                >
-                  Uždaryti
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="lat-lng">
-              <input
-                type="text"
-                name="adresas"
-                id="adresas"
-                defaultValue={job.adresas}
-                value={fullAddress}
-                onChange={changeAddress}
-              />
-              <input
-                type="text"
-                name="lat"
-                id="lat"
-                defaultValue={job.lat}
-                value={lat}
-                onChange={changeAddress}
-              />
-              <input
-                type="text"
-                name="lng"
-                id="lng"
-                defaultValue={job.lng}
-                value={lng}
-                onChange={changeAddress}
-              />
-            </div>
-          )}
+          <input type="hidden" name="adresas" value={fullAddress} readOnly />
+          <input type="hidden" name="lat" value={lat} readOnly />
+          <input type="hidden" name="lng" value={lng} readOnly />
 
           <FormRowSelect
             name="jobStatus"
@@ -220,48 +174,52 @@ const EditJob = () => {
             defaultValue={job.jobStatus}
             list={Object.values(JOB_STATUS)}
           />
+
           <div className="form-row">
             <label htmlFor="info" className="form-label">
               Papildoma info
             </label>
-            <textarea name="info" className="form-textarea">
-              {job.info}
-            </textarea>
+            <textarea
+              name="info"
+              className="form-textarea"
+              defaultValue={job.info}
+            ></textarea>
           </div>
+
           <div className="form-row">
-            <label htmlFor="image" className="form-label">
-              Pasirinkite nuotrauka (max 0.5MB)
+            <label htmlFor="images" className="form-label">
+              Pasirinkite nuotraukas (max 0.5MB kiekviena)
             </label>
             <input
               type="file"
-              id="image"
-              name="image"
+              id="images"
+              name="images"
               className="form-input"
               accept="image/*"
+              multiple
             />
           </div>
-          <div className="form-row">
-            <button
-              type="submit"
-              className="btn btn-block form-btn"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "pridedama..." : "redaguoti"}
-            </button>
-            <button
-              type="submit"
-              onClick={togglePrislopintas}
-              className={
-                job.prislopintas
-                  ? "btn btn-block form-btn true"
-                  : "btn btn-block form-btn false"
-              }
-            >
-              Prislopinti
-            </button>
-          </div>
+
+          {/* Paslėpti laukeliai su likusiomis nuotraukomis */}
+          {localImages.map((img, index) => (
+            <input
+              key={index}
+              type="hidden"
+              name="existingImages"
+              value={img}
+            />
+          ))}
+
+          <button
+            type="submit"
+            className="btn form-btn"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Pridedama..." : "Redaguoti"}
+          </button>
         </div>
       </Form>
+
       <div className="kalendorius">
         <DatePicker
           selected={startDate}
@@ -278,9 +236,6 @@ const EditJob = () => {
           dateFormat="h:mm aa"
           locale={lt}
         />
-
-        {console.log(laikas, data)}
-
         <AddToCalendarButton
           label="Pridėti kalendoriuje"
           name={`${job.jobStatus}: ${job.vardas}`}
@@ -297,4 +252,5 @@ const EditJob = () => {
     </Wrapper>
   );
 };
+
 export default EditJob;

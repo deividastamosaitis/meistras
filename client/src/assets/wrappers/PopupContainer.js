@@ -1,39 +1,61 @@
 import styled from "styled-components";
 
 const Wrapper = styled.section`
-  .popup {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
+  .popup-info {
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 12px;
+    color: #333;
+
+    p {
+      margin: 4px 0;
+    }
+
+    .popup-description {
+      background-color: #f9f9f9;
+      padding: 8px;
+      border-radius: 6px;
+      margin-top: 6px;
+      font-style: italic;
+      color: #555;
+    }
   }
-  .aprasymas {
-    border: solid 1px black;
-    padding: 5px;
-  }
-  .redaguoti {
-    justify-content: right;
-  }
-  .navigacija {
-    justify-content: left;
-  }
-  .mygtukai button,
-  .redaguoti {
-    cursor: pointer;
-    color: #fff;
-    background: #2cb1bc;
-    border: transparent;
-    border-radius: 0.25rem;
-    letter-spacing: 1px;
-    padding: 0.375rem 0.75rem;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    transition: 0.3s ease-in-out all;
-    text-transform: capitalize;
-    display: inline-block;
-  }
-  .mygtukai {
-    margin-top: 5px;
+
+  .popup-actions {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .popup-btn {
+    background-color: #0aa1c0;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #0784a3;
+    }
+  }
+  .sutartis-pasiras {
+    color: green;
+    font-weight: bold;
+  }
+
+  .sutartis-laukiama {
+    color: orange;
+    font-weight: bold;
+  }
+
+  .sutartis-nera {
+    color: #999;
+    font-style: italic;
   }
 `;
 

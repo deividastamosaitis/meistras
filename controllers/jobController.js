@@ -21,25 +21,40 @@ export const getJob = async (req, res) => {
 };
 
 export const updateJob = async (req, res) => {
-  const newJob = { ...req.body };
-  console.log(req.file);
+  try {
+    const newJob = { ...req.body };
+    const imagesToKeep = req.body.existingImages || [];
 
-  if (req.file) {
-    const response = await cloudinary.v2.uploader.upload(req.file.path);
-    await fs.unlink(req.file.path);
-    req.body.image = response.secure_url;
-    req.body.imageId = response.imageId;
-  }
-  const updatedJob = await Job.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  });
-  if (req.file && updatedJob.imageId) {
-    await cloudinary.v2.uploader.destroy(updatedJob.imageId);
-  }
+    // jei vienas stringas – padaryti į masyvą
+    const keep = Array.isArray(imagesToKeep) ? imagesToKeep : [imagesToKeep];
 
-  res
-    .status(StatusCodes.OK)
-    .json({ msg: "Objektas redaguotas", job: updatedJob });
+    // Upload new files (jei yra)
+    if (req.files && req.files.length > 0) {
+      const newUploads = await Promise.all(
+        req.files.map(async (file) => {
+          const result = await cloudinary.v2.uploader.upload(file.path);
+          await fs.unlink(file.path);
+          return result.secure_url;
+        })
+      );
+      newJob.images = [...keep, ...newUploads]; // visos: senos + naujos
+    } else {
+      newJob.images = keep; // tik likusios
+    }
+
+    const updatedJob = await Job.findByIdAndUpdate(req.params.id, newJob, {
+      new: true,
+    });
+
+    res
+      .status(StatusCodes.OK)
+      .json({ msg: "Objektas atnaujintas", job: updatedJob });
+  } catch (error) {
+    console.error("UpdateJob klaida:", error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Serverio klaida" });
+  }
 };
 
 export const deleteJob = async (req, res) => {

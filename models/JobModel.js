@@ -24,6 +24,9 @@ const JobSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "User",
     },
+    images: [String], // <- Naujas laukas kelioms nuotraukoms
+
+    // Galima pašalinti šiuos, jei nebenaudosi vienos nuotraukos lauko
     image: String,
     imageId: String,
   },

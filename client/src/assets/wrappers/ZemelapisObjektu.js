@@ -232,6 +232,25 @@ const Wrapper = styled.nav`
     border-radius: 50%;
     cursor: pointer;
   }
+  .sutarties-busena {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+
+  .sutartis-pasiras {
+    color: green;
+    font-weight: bold;
+  }
+
+  .sutartis-laukiama {
+    color: orange;
+    font-weight: bold;
+  }
+
+  .sutartis-nera {
+    color: #999;
+    font-style: italic;
+  }
 `;
 
 export default Wrapper;

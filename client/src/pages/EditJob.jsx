@@ -1,14 +1,18 @@
+// EditJob.jsx
 import { useState, useCallback } from "react";
 import { FormRow, FormRowSelect } from "../components";
 import Wrapper from "../assets/wrappers/EditJobForm";
-import { useLoaderData, useNavigation, redirect, Form } from "react-router-dom";
+import {
+  useLoaderData,
+  useNavigation,
+  redirect,
+  Form,
+  useNavigate,
+} from "react-router-dom";
 import { JOB_STATUS } from "../../../utils/constants";
 import { AddressAutofill } from "@mapbox/search-js-react";
 import { toast } from "react-toastify";
-import DatePicker from "react-datepicker";
 import { format } from "date-fns";
-import { lt } from "date-fns/locale";
-import { AddToCalendarButton } from "add-to-calendar-button-react";
 import customFetch from "../utils/customFetch";
 
 export const loader = async ({ params }) => {
@@ -44,13 +48,12 @@ const EditJob = () => {
   const [lng, setLng] = useState(job.lng);
   const [lat, setLat] = useState(job.lat);
   const [fullAddress, setFullAddress] = useState(job.adresas);
-  const [startDate, setStartDate] = useState(new Date());
-  const [startTime, setStartTime] = useState(new Date());
   const [selectedImage, setSelectedImage] = useState(null);
   const [localImages, setLocalImages] = useState(job.images || []);
-  const laikas = format(startTime, "HH:mm");
-  const data = format(startDate, "yyyy-MM-dd");
+  const [prislopintas, setPrislopintas] = useState(job.prislopintas);
+  const [showCoordsModal, setShowCoordsModal] = useState(false);
   const navigation = useNavigation();
+  const navigate = useNavigate();
   const isSubmitting = navigation.state === "submitting";
 
   const handleImageDelete = (url) => {
@@ -76,46 +79,182 @@ const EditJob = () => {
   if (sutartis)
     sutartiesBusena = sutartis.pdf ? "Pasirašyta" : "Laukiama pasirašymo";
 
+  const handleSutartis = () => {
+    navigate("/dashboard/sutartys", {
+      state: {
+        pavadinimas: job.vardas,
+        telefonas: job.telefonas,
+        email: job.email,
+        adresas: job.adresas,
+      },
+    });
+  };
+
   return (
     <Wrapper>
-      <div className="image-gallery">
-        {localImages.length > 0 ? (
-          localImages.map((src, i) => (
-            <div key={i} className="image-wrapper">
-              <img
-                src={src}
-                alt={`img-${i}`}
-                className="img"
-                onClick={() => setSelectedImage(src)}
+      <Form method="post" encType="multipart/form-data" className="form">
+        <h4 className="form-title">Redaguoti objektą</h4>
+
+        <div className="form-section">
+          <div className="form-row checkbox-row">
+            <label htmlFor="prislopintas" className="form-label">
+              Prislopinti
+            </label>
+            <input
+              type="checkbox"
+              id="prislopintas"
+              name="prislopintas"
+              checked={prislopintas}
+              onChange={(e) => setPrislopintas(e.target.checked)}
+              className="checkbox-input"
+            />
+          </div>
+        </div>
+
+        <div className="form-section">
+          <div className="sutarties-info">
+            <strong>Sutartis:</strong>{" "}
+            <span
+              className={`sutartis-${sutartiesBusena
+                .toLowerCase()
+                .replaceAll(" ", "-")}`}
+            >
+              {sutartiesBusena}
+            </span>
+            {sutartis ? (
+              <>
+                {sutartis?.pdf && (
+                  <a
+                    href={`/${sutartis.pdf.filepath}`}
+                    className="sutartis-perziura"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Peržiūrėti
+                  </a>
+                )}
+                <button
+                  type="button"
+                  className="btn sutartis-btn"
+                  onClick={() => {
+                    const url = `http://sutartys.todesa.lt/sutartis/${sutartis._id}`;
+                    navigator.clipboard.writeText(url);
+                    toast.success("Sutarties nuoroda nukopijuota!");
+                  }}
+                >
+                  Kopijuoti nuorodą klientui
+                </button>
+              </>
+            ) : (
+              <button
+                type="button"
+                className="btn sutartis-btn"
+                onClick={handleSutartis}
+              >
+                Sudaryti sutartį
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div className="form-section">
+          <div className="form-center">
+            <FormRow type="text" name="vardas" defaultValue={job.vardas} />
+            <FormRow
+              type="text"
+              name="telefonas"
+              defaultValue={job.telefonas}
+            />
+            <FormRow type="text" name="email" defaultValue={job.email} />
+
+            <div className="form-row">
+              <label className="form-label">Adresas</label>
+              <input
+                type="text"
+                name="adresas"
+                className="form-input"
+                value={fullAddress}
+                readOnly
               />
               <button
                 type="button"
-                className="delete-img-btn"
-                onClick={() => handleImageDelete(src)}
+                className="btn"
+                onClick={() => setShowCoordsModal(true)}
               >
-                ✕
+                Keisti koordinates
               </button>
             </div>
-          ))
-        ) : job.image ? (
-          <div className="image-wrapper">
-            <img
-              src={job.image}
-              alt="viena nuotrauka"
-              className="img"
-              onClick={() => setSelectedImage(job.image)}
+
+            <input type="hidden" name="lat" value={lat} readOnly />
+            <input type="hidden" name="lng" value={lng} readOnly />
+
+            <FormRowSelect
+              name="jobStatus"
+              labelText="Statusas"
+              defaultValue={job.jobStatus}
+              list={Object.values(JOB_STATUS)}
             />
-            <button
-              type="button"
-              className="delete-img-btn"
-              onClick={() => handleImageDelete(job.image)}
-            >
-              ✕
-            </button>
+
+            <div className="form-row">
+              <label htmlFor="info" className="form-label">
+                Papildoma info
+              </label>
+              <textarea
+                name="info"
+                className="form-textarea"
+                defaultValue={job.info}
+              ></textarea>
+            </div>
+
+            <div className="form-row">
+              <label htmlFor="images" className="form-label">
+                Pasirinkite nuotraukas (max 0.5MB kiekviena)
+              </label>
+              <input
+                type="file"
+                id="images"
+                name="images"
+                className="form-input"
+                accept="image/*"
+                multiple
+              />
+            </div>
           </div>
-        ) : (
-          <p style={{ color: "#888" }}>Nuotraukos nepridėtos</p>
-        )}
+        </div>
+
+        {localImages.map((img, index) => (
+          <input key={index} type="hidden" name="existingImages" value={img} />
+        ))}
+
+        <button type="submit" className="btn form-btn" disabled={isSubmitting}>
+          {isSubmitting ? "Pridedama..." : "Redaguoti"}
+        </button>
+      </Form>
+
+      <div className="form-section">
+        <div className="image-gallery">
+          {localImages.length > 0 ? (
+            localImages.map((src, i) => (
+              <div key={i} className="image-wrapper">
+                <img
+                  src={src}
+                  alt={`img-${i}`}
+                  className="img"
+                  onClick={() => setSelectedImage(src)}
+                />
+                <button
+                  type="button"
+                  className="delete-img-btn"
+                  onClick={() => handleImageDelete(src)}
+                >
+                  ✕
+                </button>
+              </div>
+            ))
+          ) : (
+            <p style={{ color: "#888" }}>Nuotraukos nepridėtos</p>
+          )}
+        </div>
       </div>
 
       {selectedImage && (
@@ -124,131 +263,40 @@ const EditJob = () => {
         </div>
       )}
 
-      <Form method="post" encType="multipart/form-data">
-        <h4 className="form-title">Redaguoti objektą</h4>
-
-        <div className="sutarties-info">
-          <strong>Sutartis:</strong>{" "}
-          <span
-            className={`sutartis-${sutartiesBusena
-              .toLowerCase()
-              .replaceAll(" ", "-")}`}
-          >
-            {sutartiesBusena}
-          </span>
-          {sutartis?.pdf && (
-            <a
-              href={`/${sutartis.pdf.filepath}`}
-              className="sutartis-perziura"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Peržiūrėti
-            </a>
-          )}
-        </div>
-
-        <div className="form-center">
-          <FormRow type="text" name="vardas" defaultValue={job.vardas} />
-          <FormRow type="text" name="telefonas" defaultValue={job.telefonas} />
-          <FormRow type="text" name="email" defaultValue={job.email} />
-
-          <AddressAutofill
-            accessToken="pk.eyJ1IjoiZnJpZGF5OTkiLCJhIjoiY2xqZWx6aHA1MHBqcjNlcjMydGR5OWdqYiJ9.PDiu8ZfBkoCT08_0z5FEYA"
-            onRetrieve={handleAddres}
-          >
-            <FormRow
+      {showCoordsModal && (
+        <div className="image-modal" onClick={() => setShowCoordsModal(false)}>
+          <div className="popup-innera" onClick={(e) => e.stopPropagation()}>
+            <h3>Keisti koordinates</h3>
+            <label>Adresas</label>
+            <input
               type="text"
-              labelText="Adresas"
-              defaultValue={job.adresas}
-            />
-          </AddressAutofill>
-
-          <input type="hidden" name="adresas" value={fullAddress} readOnly />
-          <input type="hidden" name="lat" value={lat} readOnly />
-          <input type="hidden" name="lng" value={lng} readOnly />
-
-          <FormRowSelect
-            name="jobStatus"
-            labelText="Statusas"
-            defaultValue={job.jobStatus}
-            list={Object.values(JOB_STATUS)}
-          />
-
-          <div className="form-row">
-            <label htmlFor="info" className="form-label">
-              Papildoma info
-            </label>
-            <textarea
-              name="info"
-              className="form-textarea"
-              defaultValue={job.info}
-            ></textarea>
-          </div>
-
-          <div className="form-row">
-            <label htmlFor="images" className="form-label">
-              Pasirinkite nuotraukas (max 0.5MB kiekviena)
-            </label>
-            <input
-              type="file"
-              id="images"
-              name="images"
               className="form-input"
-              accept="image/*"
-              multiple
+              value={fullAddress}
+              onChange={(e) => setFullAddress(e.target.value)}
             />
-          </div>
-
-          {/* Paslėpti laukeliai su likusiomis nuotraukomis */}
-          {localImages.map((img, index) => (
+            <label>Lat</label>
             <input
-              key={index}
-              type="hidden"
-              name="existingImages"
-              value={img}
+              type="text"
+              className="form-input"
+              value={lat}
+              onChange={(e) => setLat(e.target.value)}
             />
-          ))}
-
-          <button
-            type="submit"
-            className="btn form-btn"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "Pridedama..." : "Redaguoti"}
-          </button>
+            <label>Lng</label>
+            <input
+              type="text"
+              className="form-input"
+              value={lng}
+              onChange={(e) => setLng(e.target.value)}
+            />
+            <button
+              className="btn form-btn"
+              onClick={() => setShowCoordsModal(false)}
+            >
+              Išsaugoti
+            </button>
+          </div>
         </div>
-      </Form>
-
-      <div className="kalendorius">
-        <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-          dateFormat="yyyy/MM/dd"
-        />
-        <DatePicker
-          selected={startTime}
-          onChange={(date) => setStartTime(date)}
-          showTimeSelect
-          showTimeSelectOnly
-          timeIntervals={15}
-          timeCaption="Laikas"
-          dateFormat="h:mm aa"
-          locale={lt}
-        />
-        <AddToCalendarButton
-          label="Pridėti kalendoriuje"
-          name={`${job.jobStatus}: ${job.vardas}`}
-          options={["Google"]}
-          startDate={data}
-          startTime={laikas}
-          endTime={laikas}
-          timeZone="Europe/Vilnius"
-          availability="busy"
-          location={job.adresas}
-          description={`telefonas: ${job.telefonas}, info: ${job.info}`}
-        ></AddToCalendarButton>
-      </div>
+      )}
     </Wrapper>
   );
 };

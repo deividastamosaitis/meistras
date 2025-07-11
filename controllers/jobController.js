@@ -23,12 +23,15 @@ export const getJob = async (req, res) => {
 export const updateJob = async (req, res) => {
   try {
     const newJob = { ...req.body };
-    const imagesToKeep = req.body.existingImages || [];
 
-    // jei vienas stringas – padaryti į masyvą
+    // Boolean konvertavimas
+    newJob.prislopintas = req.body.prislopintas === "on";
+
+    // Nuotraukų apdorojimas
+    const imagesToKeep = req.body.existingImages || [];
     const keep = Array.isArray(imagesToKeep) ? imagesToKeep : [imagesToKeep];
 
-    // Upload new files (jei yra)
+    // Naujos nuotraukos
     if (req.files && req.files.length > 0) {
       const newUploads = await Promise.all(
         req.files.map(async (file) => {
@@ -37,11 +40,12 @@ export const updateJob = async (req, res) => {
           return result.secure_url;
         })
       );
-      newJob.images = [...keep, ...newUploads]; // visos: senos + naujos
+      newJob.images = [...keep, ...newUploads];
     } else {
-      newJob.images = keep; // tik likusios
+      newJob.images = keep;
     }
 
+    // DB atnaujinimas
     const updatedJob = await Job.findByIdAndUpdate(req.params.id, newJob, {
       new: true,
     });
